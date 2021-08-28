@@ -67,10 +67,10 @@ class Vehicle:
     def get_turn_circle_center(self, turn_radius, right_turn=True):
         if right_turn:
             front = self.front_left_wheel
-            center = [front.x + math.cos(math.radians(front.ANGLE)), front.y - math.sin(math.radians(front.ANGLE))]
+            center = [front.x + turn_radius*math.cos(math.radians(front.ANGLE)), front.y - turn_radius*math.sin(math.radians(front.ANGLE))]
         else:
             front = self.front_right_wheel
-            center = [front.x - math.cos(math.radians(front.ANGLE)), front.y - math.sin(math.radians(front.ANGLE))]
+            center = [front.x - turn_radius*math.cos(math.radians(front.ANGLE)), front.y - turn_radius*math.sin(math.radians(front.ANGLE))]
         return center
 
 
