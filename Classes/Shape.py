@@ -47,6 +47,6 @@ class Shape:
     def draw(self):
         if self.fill:
             pygame.draw.polygon(self.surface, self.fill_color, self.points)
-            pygame.draw.polygon(self.surface, self.color, self.points, width=self.line_width)
+            pygame.draw.aalines(self.surface, self.color, True,  self.points)
         else:
-            pygame.draw.polygon(self.surface, self.color, self.points, width=self.line_width)
+            pygame.draw.aalines(self.surface, self.color, True, self.points)

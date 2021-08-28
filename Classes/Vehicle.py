@@ -53,7 +53,7 @@ class Vehicle:
         self.back_left_wheel.draw()
 
     def turn(self):
-        self.outline.rotate(math.pi/2)
+        self.outline.rotate(math.radians(20))
 
         # foo bar
 
