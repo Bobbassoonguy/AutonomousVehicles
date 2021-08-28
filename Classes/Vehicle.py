@@ -65,17 +65,23 @@ class Vehicle:
             i.rotate(degrees, rotation_point)
 
     def turn(self, turn_radius, turn_degrees, right_turn=True, display_turn_circle=False):
+        if turn_radius < self.MIN_TURN_DIAMETER/2:
+            raise ValueError('Attempted a turn radius which was smaller than minimum')
         if right_turn:
             center = self.get_turn_circle_center(turn_radius, right_turn=True)
             self.rotate(turn_degrees, center)
             if self.front_left_wheel.angle == self.angle:
                 self.front_left_wheel.rotate(math.degrees(math.asin(self.WHEELBASE/turn_radius)))
+                self.front_right_wheel.rotate(math.degrees(math.asin(self.WHEELBASE/math.sqrt(
+                    self.WHEELBASE**2+(-self.TRACK+math.sqrt(turn_radius**2-self.WHEELBASE**2))**2))))
 
         else:
             center = self.get_turn_circle_center(turn_radius, right_turn=False)
             self.rotate(-turn_degrees, center)
             if self.front_right_wheel.angle == self.angle:
                 self.front_right_wheel.rotate(-math.degrees(math.asin(self.WHEELBASE / turn_radius)))
+                self.front_left_wheel.rotate(-math.degrees(math.asin(self.WHEELBASE / math.sqrt(
+                    self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))))
 
         if display_turn_circle:
             pygame.draw.circle(self.surface, [0, 0, 255], center, turn_radius * self.PIXELS_PER_METER, width=1)

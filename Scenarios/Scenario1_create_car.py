@@ -16,7 +16,7 @@ while not done:
     clock.tick(main.FPS)
     main.main()
 
-    main.vehicles[0].turn(5.4, 1, right_turn=False, display_turn_circle=True)
+    main.vehicles[0].turn(5.4, 1, right_turn=True, display_turn_circle=True)
 
     pygame.display.flip()
 
