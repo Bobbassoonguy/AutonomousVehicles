@@ -3,7 +3,7 @@ import pygame
 class Vehicle:
     def __init__(self, parent):
         self.parent = parent
-        self.display_screen = self.parent.screen
+        self.surface = self.parent.screen
         self.LENGTH = 4.5  # meters
         self.WIDTH = 1.8  # meters
         self.FRONT_AXLE_TO_FRONT = 1  # meters
@@ -36,8 +36,8 @@ class Vehicle:
         display_rectangle_round_corners = 1.5 * display_border_thickness
 
         outline = pygame.Rect(self.x-(self.WIDTH * self.parent.PIXELS_PER_METER / 2), self.y-(self.LENGTH * self.parent.PIXELS_PER_METER / 2), self.WIDTH * self.parent.PIXELS_PER_METER, self.LENGTH * self.parent.PIXELS_PER_METER)
-        pygame.draw.rect(self.display_screen, (153, 255, 153), outline, border_radius=round(display_rectangle_round_corners * self.parent.PIXELS_PER_METER))
-        pygame.draw.rect(self.display_screen, (51, 204, 51), outline, width=round(display_border_thickness * self.parent.PIXELS_PER_METER), border_radius=round(display_rectangle_round_corners * self.parent.PIXELS_PER_METER))
+        pygame.draw.rect(self.surface, (153, 255, 153), outline, border_radius=round(display_rectangle_round_corners * self.parent.PIXELS_PER_METER))
+        pygame.draw.rect(self.surface, (51, 204, 51), outline, width=round(display_border_thickness * self.parent.PIXELS_PER_METER), border_radius=round(display_rectangle_round_corners * self.parent.PIXELS_PER_METER))
 
         self.front_right_wheel.draw()
         self.front_left_wheel.draw()
@@ -52,7 +52,7 @@ class Vehicle:
 class Wheel:
     def __init__(self, parent, steering, x, y):
         self.parent = parent
-        self.display_screen = self.parent.display_screen
+        self.display_screen = self.parent.surface
         self.WIDTH = 0.18  # meters
         self.DIAMETER = 0.44  # meters
         self.STEERING = False
