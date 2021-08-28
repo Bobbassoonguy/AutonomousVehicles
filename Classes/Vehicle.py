@@ -13,8 +13,8 @@ class Vehicle:
         self.TRACK = 1.5  # meters
         self.MIN_TURN_DIAMETER = 10.8  # meters
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
-        self.ANGLE = 0
 
+        self.angle = 0
         self.x = x
         self.y = y
 
@@ -57,26 +57,42 @@ class Vehicle:
         self.back_left_wheel.draw()
 
     def rotate(self, degrees, rotation_point):
-        self.ANGLE += degrees
-        self.ANGLE %= 360
+        self.angle += degrees
+        self.angle %= 360
         self.outline.rotate(degrees, rotation_point)
         self.x, self.y = self.outline.get_centroid()
         for i in self.wheels:
             i.rotate(degrees, rotation_point)
 
-    def turn(self, turn_radius, turn_degrees):
-        print("hi")
+    def turn(self, turn_radius, turn_degrees, right_turn=True, display_turn_circle=False):
+        if right_turn:
+            center = self.get_turn_circle_center(turn_radius, right_turn=True)
+            self.rotate(turn_degrees, center)
+            if self.front_left_wheel.angle == self.angle:
+                self.front_left_wheel.rotate(math.degrees(math.asin(self.WHEELBASE/turn_radius)))
+
+        else:
+            center = self.get_turn_circle_center(turn_radius, right_turn=False)
+            self.rotate(-turn_degrees, center)
+            if self.front_right_wheel.angle == self.angle:
+                self.front_right_wheel.rotate(-math.degrees(math.asin(self.WHEELBASE / turn_radius)))
+
+        if display_turn_circle:
+            pygame.draw.circle(self.surface, [0, 0, 255], center, turn_radius * self.PIXELS_PER_METER, width=1)
+            pygame.draw.circle(self.surface, [0, 0, 255], center, 3, width=3)
+
+
 
     def get_turn_circle_center(self, turn_radius, right_turn=True):
         turn_radius *= self.PIXELS_PER_METER
         if right_turn:
             back = self.back_left_wheel
-            center = [back.x + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.cos(math.radians(self.ANGLE)),
-                      back.y + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.sin(math.radians(self.ANGLE))]
+            center = [back.x + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.cos(math.radians(self.angle)),
+                      back.y + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.sin(math.radians(self.angle))]
         else:
             back = self.back_right_wheel
-            center = [back.x - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.cos(math.radians(self.ANGLE)),
-                      back.y - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.sin(math.radians(self.ANGLE))]
+            center = [back.x - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.cos(math.radians(self.angle)),
+                      back.y - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.sin(math.radians(self.angle))]
         return center
 
 
@@ -90,8 +106,8 @@ class Wheel:
         self.DIAMETER = 0.44  # meters
         self.STEERING = False
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
-        self.ANGLE = 0
 
+        self.angle = 0
         self.x = x
         self.y = y
 
@@ -122,8 +138,8 @@ class Wheel:
         self.y = y
 
     def rotate(self, angle, rotation_point="centroid"):
-        self.ANGLE += angle
-        self.ANGLE %= 360
+        self.angle += angle
+        self.angle %= 360
         if rotation_point == "centroid":
             rotation_point = self.outline.get_centroid()
         self.outline.rotate(angle, rotation_point)
