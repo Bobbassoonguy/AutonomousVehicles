@@ -53,8 +53,10 @@ class Vehicle:
         self.back_right_wheel.draw()
         self.back_left_wheel.draw()
 
-    def turn(self, degrees):
-        self.outline.rotate(math.radians(degrees))
+    def turn(self, degrees, rotation_point):
+        self.outline.rotate(degrees)
+        for i in self.wheels:
+            i.rotate(degrees, rotation_point)
 
         # foo bar
 
@@ -93,3 +95,15 @@ class Wheel:
 
     def draw(self):
         self.outline.draw()
+
+    def move_to(self, x, y):
+        self.outline.move_point_to_point(self.outline.get_centroid(), [x, y])
+        self.x = x
+        self.y = y
+
+    def rotate(self, angle, rotation_point="centroid"):
+        if rotation_point == "centroid":
+            rotation_point = self.outline.get_centroid()
+        self.outline.rotate(angle, rotation_point)
+        self.x = self.outline.get_centroid()[0]
+        self.y = self.outline.get_centroid()[1]
