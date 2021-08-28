@@ -64,23 +64,27 @@ class Vehicle:
         for i in self.wheels:
             i.rotate(degrees, rotation_point)
 
+    def rotate_to_angle(self, angle, rotation_point="centroid"):
+        self.rotate(angle-self.angle, rotation_point)
+
     def turn(self, turn_radius, turn_degrees, right_turn=True, display_turn_circle=False):
         if turn_radius < self.MIN_TURN_DIAMETER/2:
             raise ValueError('Attempted a turn radius which was smaller than minimum')
         if right_turn:
             center = self.get_turn_circle_center(turn_radius, right_turn=True)
             self.rotate(turn_degrees, center)
-            if self.front_left_wheel.angle == self.angle:
-                self.front_left_wheel.rotate(math.degrees(math.asin(self.WHEELBASE/turn_radius)))
-                self.front_right_wheel.rotate(math.degrees(math.asin(self.WHEELBASE/math.sqrt(
+
+            if self.front_left_wheel.angle != self.angle + math.degrees(math.asin(self.WHEELBASE/turn_radius)):
+                self.front_left_wheel.rotate_to_angle(self.angle + math.degrees(math.asin(self.WHEELBASE/turn_radius)))
+                self.front_right_wheel.rotate_to_angle(self.angle +math.degrees(math.asin(self.WHEELBASE/math.sqrt(
                     self.WHEELBASE**2+(-self.TRACK+math.sqrt(turn_radius**2-self.WHEELBASE**2))**2))))
 
         else:
             center = self.get_turn_circle_center(turn_radius, right_turn=False)
             self.rotate(-turn_degrees, center)
-            if self.front_right_wheel.angle == self.angle:
-                self.front_right_wheel.rotate(-math.degrees(math.asin(self.WHEELBASE / turn_radius)))
-                self.front_left_wheel.rotate(-math.degrees(math.asin(self.WHEELBASE / math.sqrt(
+            if self.front_right_wheel.angle != self.angle - math.degrees(math.asin(self.WHEELBASE/turn_radius)):
+                self.front_right_wheel.rotate_to_angle(self.angle-math.degrees(math.asin(self.WHEELBASE / turn_radius)))
+                self.front_left_wheel.rotate_to_angle(self.angle-math.degrees(math.asin(self.WHEELBASE / math.sqrt(
                     self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))))
 
         if display_turn_circle:
@@ -151,3 +155,6 @@ class Wheel:
         self.outline.rotate(angle, rotation_point)
         self.x = self.outline.get_centroid()[0]
         self.y = self.outline.get_centroid()[1]
+
+    def rotate_to_angle(self, angle, rotation_point="centroid"):
+        self.rotate(angle-self.angle, rotation_point)
