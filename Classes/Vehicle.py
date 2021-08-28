@@ -28,6 +28,7 @@ class Vehicle:
                                        self.y + (self.WHEELBASE / 2))
         self.back_left_wheel = Wheel(self, True, self.x - (self.TRACK / 2),
                                        self.y + (self.WHEELBASE / 2))
+        self.wheels = [self.front_right_wheel, self.front_left_wheel,self.back_left_wheel,self.back_right_wheel]
 
         print("New Car initialized")
 
@@ -52,8 +53,8 @@ class Vehicle:
         self.back_right_wheel.draw()
         self.back_left_wheel.draw()
 
-    def turn(self):
-        self.outline.rotate(math.radians(20))
+    def turn(self, degrees):
+        self.outline.rotate(math.radians(degrees))
 
         # foo bar
 
