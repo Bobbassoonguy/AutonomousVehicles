@@ -6,6 +6,8 @@ done = False
 main = Scenario("Scenario 1 - Create Car")
 clock = pygame.time.Clock()
 
+main.addCar()
+
 while not done:
     clock.tick(main.FPS)
     main.main()
