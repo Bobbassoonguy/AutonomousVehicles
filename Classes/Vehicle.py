@@ -13,6 +13,7 @@ class Vehicle:
         self.TRACK = 1.5  # meters
         self.MIN_TURN_RADIUS = 10.8  # meters
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
+        self.ANGLE = 0
 
         self.x = x
         self.y = y
@@ -54,13 +55,23 @@ class Vehicle:
         self.back_left_wheel.draw()
 
     def rotate(self, degrees, rotation_point):
+        self.ANGLE += degrees
+        self.ANGLE %= 360
         self.outline.rotate(degrees, rotation_point)
         for i in self.wheels:
             i.rotate(degrees, rotation_point)
 
     def turn(self, turn_radius, turn_degrees):
+        print("hi")
 
-    def get_turn_circle_center(self, turn_radius):
+    def get_turn_circle_center(self, turn_radius, right_turn=True):
+        if right_turn:
+            front = self.front_left_wheel
+            center = [front.x + math.cos(math.radians(front.ANGLE)), front.y - math.sin(math.radians(front.ANGLE))]
+        else:
+            front = self.front_right_wheel
+            center = [front.x - math.cos(math.radians(front.ANGLE)), front.y - math.sin(math.radians(front.ANGLE))]
+        return center
 
 
 
@@ -73,6 +84,7 @@ class Wheel:
         self.DIAMETER = 0.44  # meters
         self.STEERING = False
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
+        self.ANGLE = 0
 
         self.x = x
         self.y = y
@@ -104,6 +116,8 @@ class Wheel:
         self.y = y
 
     def rotate(self, angle, rotation_point="centroid"):
+        self.ANGLE += angle
+        self.ANGLE %= 360
         if rotation_point == "centroid":
             rotation_point = self.outline.get_centroid()
         self.outline.rotate(angle, rotation_point)
