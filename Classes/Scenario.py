@@ -6,7 +6,7 @@ class Scenario:
         #GLOBAL VARIABLES
         self.CANVAS_SIZE_X = 1000
         self.CANVAS_SIZE_y = 1000
-        self.PIXELS_PER_METER = 75
+        self.PIXELS_PER_METER = 30
         self.ROAD_MIN_CURVE_RAD = 10
         self.FPS = 60
 

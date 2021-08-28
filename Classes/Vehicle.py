@@ -3,7 +3,7 @@ import Shape
 import math
 
 class Vehicle:
-    def __init__(self, parent, x=3, y=4):
+    def __init__(self, parent, x=20, y=10):
         self.parent = parent
         self.surface = self.parent.screen
         self.LENGTH = 4.5  # meters
@@ -11,7 +11,7 @@ class Vehicle:
         self.FRONT_AXLE_TO_FRONT = 0.95  # meters
         self.WHEELBASE = 2.7  # meters
         self.TRACK = 1.5  # meters
-        self.MIN_TURN_RADIUS = 10.8  # meters
+        self.MIN_TURN_DIAMETER = 10.8  # meters
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
         self.ANGLE = 0
 
@@ -29,6 +29,8 @@ class Vehicle:
                                        self.y + (self.WHEELBASE / 2))
         self.back_left_wheel = Wheel(self, True, self.x - (self.TRACK / 2),
                                        self.y + (self.WHEELBASE / 2))
+        self.front_right_wheel.outline.fill_color = [255, 128, 128]
+        self.front_left_wheel.outline.fill_color = [255, 128, 128]
         self.wheels = [self.front_right_wheel, self.front_left_wheel,self.back_left_wheel,self.back_right_wheel]
 
         print("New Car initialized")
@@ -66,12 +68,15 @@ class Vehicle:
         print("hi")
 
     def get_turn_circle_center(self, turn_radius, right_turn=True):
+        turn_radius *= self.PIXELS_PER_METER
         if right_turn:
-            front = self.front_left_wheel
-            center = [front.x + turn_radius*math.cos(math.radians(front.ANGLE)), front.y + turn_radius*math.sin(math.radians(front.ANGLE))]
+            back = self.back_left_wheel
+            center = [back.x + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.cos(math.radians(self.ANGLE)),
+                      back.y + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.sin(math.radians(self.ANGLE))]
         else:
-            front = self.front_right_wheel
-            center = [front.x - turn_radius*math.cos(math.radians(front.ANGLE)), front.y + turn_radius*math.sin(math.radians(front.ANGLE))]
+            back = self.back_right_wheel
+            center = [back.x - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.cos(math.radians(self.ANGLE)),
+                      back.y - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2)*math.sin(math.radians(self.ANGLE))]
         return center
 
 
