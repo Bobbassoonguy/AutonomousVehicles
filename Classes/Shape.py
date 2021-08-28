@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Shape:
     def __init__(self, parent, surface, points, color, line_width=4, fill=True, fill_color=None):
@@ -19,9 +20,19 @@ class Shape:
             y += i[1]
         return [x/num_points, y/num_points]
 
-    def rotate(self, angle, rotation_center=None):
-        #foo bar
-        print("Hello")
+    def rotate(self, angle, rotation_center="None"):
+        centroid = self.get_centroid()
+        if rotation_center != "None":
+            centroid = rotation_center
+        for i in self.points:
+            x = i[0]-centroid[0]
+            y = i[1]-centroid[1]
+            print(str(x) + ", " + str(y))
+            i[0] = x * math.cos(angle) - y * math.sin(angle) + centroid[0]
+            i[1] = x * math.sin(angle) + y * math.cos(angle) + centroid[1]
+            x = i[0] - centroid[0]
+            y = i[1] - centroid[1]
+            print(str(x) + ", " + str(y))
 
     def move(self, x_offset, y_offset):
         for i in self.points:

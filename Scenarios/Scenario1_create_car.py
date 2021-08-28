@@ -7,6 +7,7 @@ main = Scenario("Scenario 1 - Create Car")
 clock = pygame.time.Clock()
 
 main.addCar()
+main.vehicles[0].turn()
 
 while not done:
     clock.tick(main.FPS)

@@ -1,5 +1,6 @@
 import pygame
 import Shape
+import math
 
 class Vehicle:
     def __init__(self, parent, x=3, y=4):
@@ -50,6 +51,9 @@ class Vehicle:
         self.front_left_wheel.draw()
         self.back_right_wheel.draw()
         self.back_left_wheel.draw()
+
+    def turn(self):
+        self.outline.rotate(math.pi/2)
 
         # foo bar
 
