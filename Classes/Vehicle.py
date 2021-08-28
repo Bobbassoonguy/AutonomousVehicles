@@ -8,7 +8,7 @@ class Vehicle:
         self.surface = self.parent.screen
         self.LENGTH = 4.5  # meters
         self.WIDTH = 1.8  # meters
-        self.FRONT_AXLE_TO_FRONT = 1  # meters
+        self.FRONT_AXLE_TO_FRONT = 0.95  # meters
         self.WHEELBASE = 2.7  # meters
         self.TRACK = 1.5  # meters
         self.MIN_TURN_RADIUS = 10.8  # meters
@@ -53,12 +53,14 @@ class Vehicle:
         self.back_right_wheel.draw()
         self.back_left_wheel.draw()
 
-    def turn(self, degrees, rotation_point):
-        self.outline.rotate(degrees)
+    def rotate(self, degrees, rotation_point):
+        self.outline.rotate(degrees, rotation_point)
         for i in self.wheels:
             i.rotate(degrees, rotation_point)
 
-        # foo bar
+    def turn(self, turn_radius, turn_degrees):
+
+    def get_turn_circle_center(self, turn_radius):
 
 
 
