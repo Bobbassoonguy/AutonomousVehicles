@@ -18,6 +18,8 @@ class Vehicle:
         self.MIN_TURN_DIAMETER = 10.8  # meters
         self.MAX_SPEED = 50  # m/s
         self.MIN_SPEED = 0  # m/s eventually will be -9
+        self.MAX_ACCELERATION = 3.5  # m/s/s
+        self.MIN_ACCELERATION = -9.5 #m/s/s
 
         # CAR VARIABLES
         self.angle = 0
@@ -129,6 +131,14 @@ class Vehicle:
 
     def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
         # delta_time. (Usually pass 1/FPS as delta_time)
+        if self.acceleration < self.MIN_ACCELERATION:
+            self.acceleration = self.MIN_ACCELERATION
+        if self.acceleration > self.MAX_ACCELERATION:
+            self.acceleration = self.MAX_ACCELERATION
+        if self.speed + self.acceleration * delta_time > self.MAX_SPEED:
+            self.acceleration = (self.MAX_SPEED-self.speed)/delta_time
+        if self.speed + self.acceleration * delta_time < self.MIN_SPEED:
+            self.acceleration = (self.MIN_SPEED - self.speed) / delta_time
         distance = self.speed * delta_time + 0.5 * self.acceleration * delta_time ** 2
         self.speed = self.speed + self.acceleration * delta_time
         if self.current_turn_radius < 0:  # Left turn

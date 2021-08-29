@@ -15,8 +15,8 @@ main.vehicles[0].rotate_to_angle(135, rotation_point="centroid")
 # print(main.vehicles[0].x, ",", main.vehicles[0].y)
 # print(main.vehicles[0].outline.get_centroid())
 main.vehicles[0].move_to(30, 10)
-main.vehicles[0].speed = 7
-main.vehicles[0].acceleration = -1.5
+main.vehicles[0].speed = 0
+main.vehicles[0].acceleration = 5
 main.vehicles[0].current_turn_radius = 5.9
 
 while not done:
