@@ -16,8 +16,11 @@ class Vehicle:
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
 
         self.angle = 0
-        self.x = x
-        self.y = y
+        self.x = x  # meters
+        self.y = y  # meters
+        self.current_turn_radius = 0  # <0 left turn, >0 right turn, ==0 straight
+        self.speed = 0  # current speed in m/s
+        self.acceleration = 0  # current acceleration in m/s^2
 
         self.create_outline()
 
@@ -57,6 +60,13 @@ class Vehicle:
         self.back_right_wheel.draw()
         self.back_left_wheel.draw()
 
+    def move(self, dx, dy): #  moves car relative to current location. dx, dy in meters
+        self.x = self.x + dx
+        self.y = self.y + dy
+        self.outline.move(dx*self.PIXELS_PER_METER,dy*self.PIXELS_PER_METER)
+        for i in self.wheels:
+            i.move(dx, dy)
+
     def rotate(self, degrees, rotation_point):
         self.angle += degrees
         self.angle %= 360
@@ -92,8 +102,6 @@ class Vehicle:
             pygame.draw.circle(self.surface, [0, 0, 255], center, turn_radius * self.PIXELS_PER_METER, width=1)
             pygame.draw.circle(self.surface, [0, 0, 255], center, 3, width=3)
 
-
-
     def get_turn_circle_center(self, turn_radius, right_turn=True):
         turn_radius *= self.PIXELS_PER_METER
         if right_turn:
@@ -106,6 +114,16 @@ class Vehicle:
                       back.y - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.sin(math.radians(self.angle))]
         return center
 
+    def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
+        # delta_time. (Usually pass 1/FPS as delta_time)
+        distance = self.speed * delta_time + 0.5 * self.acceleration * delta_time ** 2
+        self.speed = self.speed + self.acceleration * delta_time
+        if self.current_turn_radius < 0:  # Left turn
+            self.turn(self.current_turn_radius, math.degrees(distance/self.current_turn_radius), right_turn=False, display_turn_circle=True)
+        elif self.current_turn_radius > 0:  # Right turn
+            self.turn(self.current_turn_radius, math.degrees(distance / self.current_turn_radius), right_turn=True, display_turn_circle=True)
+        else:
+            self.move(distance*math.cos(math.radians(self.angle)), distance*math.sin(math.radians(self.angle)))
 
 
 
@@ -118,9 +136,9 @@ class Wheel:
         self.STEERING = False
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
 
-        self.angle = 0
-        self.x = x
-        self.y = y
+        self.angle = 0  # degrees
+        self.x = x  # meters
+        self.y = y  # meters
 
         self.create_outline()
 
@@ -142,6 +160,11 @@ class Wheel:
 
     def draw(self):
         self.outline.draw()
+
+    def move(self, dx, dy): # meters
+        self.outline.move(dx * self.PIXELS_PER_METER, dy * self.PIXELS_PER_METER)
+        self.x = self.x + dx
+        self.y = self.y + dy
 
     def move_to(self, x, y):
         self.outline.move_point_to_point(self.outline.get_centroid(), [x, y])
