@@ -7,14 +7,19 @@ class Vehicle:
     def __init__(self, parent, x=10, y=10):
         self.parent = parent
         self.surface = self.parent.screen
+        self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
+
+        # CAR PARAMETERS
         self.LENGTH = 4.5  # meters
         self.WIDTH = 1.8  # meters
         self.FRONT_AXLE_TO_FRONT = 0.95  # meters
         self.WHEELBASE = 2.7  # meters
         self.TRACK = 1.5  # meters
         self.MIN_TURN_DIAMETER = 10.8  # meters
-        self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
+        self.MAX_SPEED = 50  # m/s
+        self.MIN_SPEED = 0  # m/s eventually will be -9
 
+        # CAR VARIABLES
         self.angle = 0
         self.x = x  # meters
         self.y = y  # meters
