@@ -1,3 +1,5 @@
+from typing import List, Any
+
 import pygame
 import Vehicle
 
@@ -12,7 +14,9 @@ class Scenario:
         self.FPS = 60
 
         self.name = name
-        self.vehicles = []
+        self.vehicles = []  # type: List[Vehicle]
+        # vehicles: List[Vehicle] # Python 3.6 syntax, PEP 526
+
 
         self.screen = pygame.display.set_mode([self.CANVAS_SIZE_X, self.CANVAS_SIZE_y])
         pygame.display.set_caption(self.name)

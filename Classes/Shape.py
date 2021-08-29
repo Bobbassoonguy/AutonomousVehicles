@@ -20,16 +20,15 @@ class Shape:
             y += i[1]
         return [x/num_points, y/num_points]
 
-    def rotate(self, angle, rotation_center="None"):
-        centroid = self.get_centroid()
+    def rotate(self, angle, rotation_point="centroid"):
         angle = math.radians(angle)
-        if rotation_center != "None":
-            centroid = rotation_center
+        if rotation_point == "centroid":
+            rotation_point = self.get_centroid()
         for i in self.points:
-            x = i[0]-centroid[0]
-            y = i[1]-centroid[1]
-            i[0] = x * math.cos(angle) - y * math.sin(angle) + centroid[0]
-            i[1] = x * math.sin(angle) + y * math.cos(angle) + centroid[1]
+            x = i[0] - rotation_point[0]
+            y = i[1] - rotation_point[1]
+            i[0] = x * math.cos(angle) - y * math.sin(angle) + rotation_point[0]
+            i[1] = x * math.sin(angle) + y * math.cos(angle) + rotation_point[1]
 
     def move(self, x_offset, y_offset):
         for i in self.points:

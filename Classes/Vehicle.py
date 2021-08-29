@@ -4,7 +4,7 @@ import math
 
 #this is a new change
 class Vehicle:
-    def __init__(self, parent, x=20, y=10):
+    def __init__(self, parent, x=10, y=10):
         self.parent = parent
         self.surface = self.parent.screen
         self.LENGTH = 4.5  # meters
@@ -63,17 +63,26 @@ class Vehicle:
     def move(self, dx, dy): #  moves car relative to current location. dx, dy in meters
         self.x = self.x + dx
         self.y = self.y + dy
-        self.outline.move(dx*self.PIXELS_PER_METER,dy*self.PIXELS_PER_METER)
+        self.outline.move(dx*self.PIXELS_PER_METER, dy*self.PIXELS_PER_METER)
         for i in self.wheels:
             i.move(dx, dy)
 
-    def rotate(self, degrees, rotation_point):
+    def move_to(self, x, y):  # moves car to these absolute coordinates (meters)
+        self.move(x-self.x,y-self.y)
+
+    def rotate(self, degrees, rotation_point="centroid"):
         self.angle += degrees
         self.angle %= 360
-        self.outline.rotate(degrees, rotation_point)
-        self.x, self.y = self.outline.get_centroid()
+        if rotation_point != "centroid":
+            rotation_point = [rotation_point[0]*self.PIXELS_PER_METER, rotation_point[1]*self.PIXELS_PER_METER]
+        self.outline.rotate(degrees, rotation_point=rotation_point)
+        self.x, self.y = [self.outline.get_centroid()[0]/self.PIXELS_PER_METER, self.outline.get_centroid()[1]/self.PIXELS_PER_METER]
+        if rotation_point == "centroid":
+            rotation_point = [self.outline.get_centroid()[0]/self.PIXELS_PER_METER, self.outline.get_centroid()[1]/self.PIXELS_PER_METER]
+        else:
+            rotation_point = [rotation_point[0]/self.PIXELS_PER_METER, rotation_point[1]/self.PIXELS_PER_METER]
         for i in self.wheels:
-            i.rotate(degrees, rotation_point)
+            i.rotate(degrees, rotation_point=rotation_point)
 
     def rotate_to_angle(self, angle, rotation_point="centroid"):
         self.rotate(angle-self.angle, rotation_point)
@@ -87,7 +96,7 @@ class Vehicle:
 
             if self.front_left_wheel.angle != self.angle + math.degrees(math.asin(self.WHEELBASE/turn_radius)):
                 self.front_left_wheel.rotate_to_angle(self.angle + math.degrees(math.asin(self.WHEELBASE/turn_radius)))
-                self.front_right_wheel.rotate_to_angle(self.angle +math.degrees(math.asin(self.WHEELBASE/math.sqrt(
+                self.front_right_wheel.rotate_to_angle(self.angle + math.degrees(math.asin(self.WHEELBASE/math.sqrt(
                     self.WHEELBASE**2+(-self.TRACK+math.sqrt(turn_radius**2-self.WHEELBASE**2))**2))))
 
         else:
@@ -99,19 +108,18 @@ class Vehicle:
                     self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))))
 
         if display_turn_circle:
-            pygame.draw.circle(self.surface, [0, 0, 255], center, turn_radius * self.PIXELS_PER_METER, width=1)
-            pygame.draw.circle(self.surface, [0, 0, 255], center, 3, width=3)
+            pygame.draw.circle(self.surface, [0, 0, 255], [center[0]*self.PIXELS_PER_METER, center[1]*self.PIXELS_PER_METER], turn_radius * self.PIXELS_PER_METER, width=1)
+            pygame.draw.circle(self.surface, [0, 0, 255], [center[0]*self.PIXELS_PER_METER, center[1]*self.PIXELS_PER_METER], 3, width=3)
 
     def get_turn_circle_center(self, turn_radius, right_turn=True):
-        turn_radius *= self.PIXELS_PER_METER
         if right_turn:
             back = self.back_left_wheel
-            center = [back.x + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.cos(math.radians(self.angle)),
-                      back.y + math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.sin(math.radians(self.angle))]
+            center = [back.x + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.angle)),
+                      back.y + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.angle))]
         else:
             back = self.back_right_wheel
-            center = [back.x - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.cos(math.radians(self.angle)),
-                      back.y - math.sqrt(turn_radius**2-(self.WHEELBASE*self.PIXELS_PER_METER)**2) * math.sin(math.radians(self.angle))]
+            center = [back.x - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.angle)),
+                      back.y - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.angle))]
         return center
 
     def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
@@ -123,7 +131,7 @@ class Vehicle:
         elif self.current_turn_radius > 0:  # Right turn
             self.turn(self.current_turn_radius, math.degrees(distance / self.current_turn_radius), right_turn=True, display_turn_circle=True)
         else:
-            self.move(distance*math.cos(math.radians(self.angle)), distance*math.sin(math.radians(self.angle)))
+            self.move(distance*math.cos(math.radians(self.angle-90)), distance*math.sin(math.radians(self.angle-90)))
 
 
 
@@ -167,18 +175,16 @@ class Wheel:
         self.y = self.y + dy
 
     def move_to(self, x, y):
-        self.outline.move_point_to_point(self.outline.get_centroid(), [x, y])
-        self.x = x
-        self.y = y
+        self.move(x-self.x, y-self.y)
 
     def rotate(self, angle, rotation_point="centroid"):
         self.angle += angle
         self.angle %= 360
-        if rotation_point == "centroid":
-            rotation_point = self.outline.get_centroid()
+        if rotation_point != "centroid":
+            rotation_point = [rotation_point[0] * self.PIXELS_PER_METER, rotation_point[1] * self.PIXELS_PER_METER]
         self.outline.rotate(angle, rotation_point)
-        self.x = self.outline.get_centroid()[0]
-        self.y = self.outline.get_centroid()[1]
+        self.x = self.outline.get_centroid()[0] / self.PIXELS_PER_METER
+        self.y = self.outline.get_centroid()[1] / self.PIXELS_PER_METER
 
     def rotate_to_angle(self, angle, rotation_point="centroid"):
         self.rotate(angle-self.angle, rotation_point)
