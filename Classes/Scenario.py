@@ -1,6 +1,7 @@
 import pygame
 import Vehicle
 
+#this is a new change
 class Scenario:
     def __init__(self, name):
         #GLOBAL VARIABLES
