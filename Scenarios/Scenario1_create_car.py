@@ -3,6 +3,7 @@ import math
 import pygame
 from Classes.Scenario import Scenario
 from Scenario import Scenario
+import Colors
 
 pygame.init()
 
@@ -16,7 +17,7 @@ main.vehicles[0].speed = 0
 main.vehicles[0].acceleration = 3.5
 main.vehicles[0].current_turn_radius = 20
 
-main.addCar(x=20, y=45, fill_color=(0, 51, 204), outline_color=(0, 153, 255))
+main.addCar(x=20, y=45, fill_color=Colors.ORANGE_FILL, outline_color=Colors.ORANGE_LINE)
 main.vehicles[1].rotate_to_angle(270, rotation_point="centroid")
 main.vehicles[1].speed = 40
 main.vehicles[1].acceleration = 0

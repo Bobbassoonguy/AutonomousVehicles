@@ -79,7 +79,7 @@ class Vehicle:
             i.move(dx, dy)
 
     def move_to(self, x, y):  # moves car to these absolute coordinates (meters)
-        self.move(x-self.x,y-self.y)
+        self.move(x-self.x, y-self.y)
 
     def rotate(self, degrees, rotation_point="centroid"):
         self.angle += degrees

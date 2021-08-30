@@ -8,7 +8,7 @@ class Shape:
         self.surface = self.globals.MAIN_SURFACE
         self.points = points  # in meters
         self.color = color
-        self.line_width = line_width  # pixels
+        self.line_width = line_width  # in pixels
         self.fill = fill
         self.fill_color = fill_color
 
