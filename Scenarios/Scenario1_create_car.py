@@ -23,11 +23,11 @@ main.vehicles[1].acceleration = 0
 main.vehicles[1].current_turn_radius = 7
 
 while not done:
-    clock.tick(main.FPS)
+    clock.tick(main.globals.FPS)
     main.main()
 
-    main.vehicles[0].go(1/main.FPS)
-    main.vehicles[1].go(1 / main.FPS)
+    main.vehicles[0].go(1/main.globals.FPS)
+    main.vehicles[1].go(1 / main.globals.FPS)
 
 
     pygame.display.flip()

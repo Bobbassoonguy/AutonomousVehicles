@@ -2,12 +2,13 @@ import pygame
 import math
 
 class Shape:
-    def __init__(self, parent, surface, points, color, line_width=4, fill=True, fill_color=None):
+    def __init__(self, parent, globals, points, color, line_width=4, fill=True, fill_color=None):
         self.parent = parent
-        self.surface = surface
-        self.points = points
+        self.globals = globals
+        self.surface = self.globals.MAIN_SURFACE
+        self.points = points  # in meters
         self.color = color
-        self.line_width = line_width
+        self.line_width = line_width  # pixels
         self.fill = fill
         self.fill_color = fill_color
 
@@ -41,8 +42,11 @@ class Shape:
         self.move(x_offset, y_offset)
 
     def draw(self):
+        drawPoints = []
+        for p in self.points:
+            drawPoints.append([p[0] * self.globals.PIXELS_PER_METER, p[1] * self.globals.PIXELS_PER_METER])
         if self.fill:
-            pygame.draw.polygon(self.surface, self.fill_color, self.points)
-            pygame.draw.aalines(self.surface, self.color, True,  self.points)
+            pygame.draw.polygon(self.surface, self.fill_color, drawPoints)
+            pygame.draw.aalines(self.surface, self.color, True,  drawPoints)
         else:
-            pygame.draw.aalines(self.surface, self.color, True, self.points)
+            pygame.draw.aalines(self.surface, self.color, True, drawPoints)

@@ -4,10 +4,10 @@ import math
 
 #this is a new change
 class Vehicle:
-    def __init__(self, parent, x, y, fill_color, outline_color):
+    def __init__(self, parent, globals, x, y, fill_color, outline_color):
         self.parent = parent
-        self.surface = self.parent.screen
-        self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
+        self.globals = globals
+        self.surface = self.globals.MAIN_SURFACE
 
         # CAR PARAMETERS
         self.LENGTH = 4.5  # meters
@@ -53,12 +53,12 @@ class Vehicle:
     def create_outline(self):
         display_border_thickness = 0.05  # meters
         display_rectangle_round_corners = 1.5 * display_border_thickness
-        self.outline = Shape.Shape(self, self.surface,
-                                   [[(self.x - (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y - (self.LENGTH/2)) * self.PIXELS_PER_METER],
-                                    [(self.x + (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y - (self.LENGTH/2)) * self.PIXELS_PER_METER],
-                                    [(self.x + (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER],
-                                    [(self.x - (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER]],
-                                   self.OUTLINE_COLOR, line_width=round(display_border_thickness * self.PIXELS_PER_METER),
+        self.outline = Shape.Shape(self, self.globals,
+                                   [[(self.x - (self.WIDTH/2)), (self.y - (self.LENGTH/2))],
+                                    [(self.x + (self.WIDTH/2)), (self.y - (self.LENGTH/2))],
+                                    [(self.x + (self.WIDTH/2)), (self.y + (self.LENGTH/2))],
+                                    [(self.x - (self.WIDTH/2)), (self.y + (self.LENGTH/2))]],
+                                   self.OUTLINE_COLOR, line_width=round(display_border_thickness),
                                    fill_color=self.FILL_COLOR)
 
     def draw(self):
@@ -74,7 +74,7 @@ class Vehicle:
     def move(self, dx, dy): #  moves car relative to current location. dx, dy in meters
         self.x = self.x + dx
         self.y = self.y + dy
-        self.outline.move(dx*self.PIXELS_PER_METER, dy*self.PIXELS_PER_METER)
+        self.outline.move(dx, dy)
         for i in self.wheels:
             i.move(dx, dy)
 
@@ -85,13 +85,13 @@ class Vehicle:
         self.angle += degrees
         self.angle %= 360
         if rotation_point != "centroid":
-            rotation_point = [rotation_point[0]*self.PIXELS_PER_METER, rotation_point[1]*self.PIXELS_PER_METER]
+            rotation_point = [rotation_point[0], rotation_point[1]]
         self.outline.rotate(degrees, rotation_point=rotation_point)
-        self.x, self.y = [self.outline.get_centroid()[0]/self.PIXELS_PER_METER, self.outline.get_centroid()[1]/self.PIXELS_PER_METER]
+        self.x, self.y = [self.outline.get_centroid()[0], self.outline.get_centroid()[1]]
         if rotation_point == "centroid":
-            rotation_point = [self.outline.get_centroid()[0]/self.PIXELS_PER_METER, self.outline.get_centroid()[1]/self.PIXELS_PER_METER]
+            rotation_point = [self.outline.get_centroid()[0], self.outline.get_centroid()[1]]
         else:
-            rotation_point = [rotation_point[0]/self.PIXELS_PER_METER, rotation_point[1]/self.PIXELS_PER_METER]
+            rotation_point = [rotation_point[0], rotation_point[1]]
         for i in self.wheels:
             i.rotate(degrees, rotation_point=rotation_point)
 
@@ -119,8 +119,8 @@ class Vehicle:
                     self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))))
 
         if display_turn_circle:
-            pygame.draw.circle(self.surface, [0, 0, 255], [center[0]*self.PIXELS_PER_METER, center[1]*self.PIXELS_PER_METER], turn_radius * self.PIXELS_PER_METER, width=1)
-            pygame.draw.circle(self.surface, [0, 0, 255], [center[0]*self.PIXELS_PER_METER, center[1]*self.PIXELS_PER_METER], 3, width=3)
+            pygame.draw.circle(self.surface, [0, 0, 255], [center[0] * self.globals.PIXELS_PER_METER, center[1] * self.globals.PIXELS_PER_METER], turn_radius * self.globals.PIXELS_PER_METER, width=1)
+            pygame.draw.circle(self.surface, [0, 0, 255], [center[0] * self.globals.PIXELS_PER_METER, center[1] * self.globals.PIXELS_PER_METER], 3, width=3)
 
     def get_turn_circle_center(self, turn_radius, right_turn=True):
         if right_turn:
@@ -157,11 +157,10 @@ class Vehicle:
 class Wheel:
     def __init__(self, parent, steering, x, y):
         self.parent = parent
-        self.surface = self.parent.surface
+        self.globals = self.parent.globals
         self.WIDTH = 0.18  # meters
         self.DIAMETER = 0.44  # meters
         self.STEERING = False
-        self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
 
         self.angle = 0  # degrees
         self.x = x  # meters
@@ -173,23 +172,23 @@ class Wheel:
 
     def create_outline(self):
         display_border_thickness = 0.02  # meters
-        self.outline = Shape.Shape(self.parent, self.surface,
-                              [[(self.x - (self.WIDTH / 2)) * self.PIXELS_PER_METER,
-                                (self.y - (self.DIAMETER / 2)) * self.PIXELS_PER_METER],
-                               [(self.x + (self.WIDTH / 2)) * self.PIXELS_PER_METER,
-                                (self.y - (self.DIAMETER / 2)) * self.PIXELS_PER_METER],
-                               [(self.x + (self.WIDTH / 2)) * self.PIXELS_PER_METER,
-                                (self.y + (self.DIAMETER / 2)) * self.PIXELS_PER_METER],
-                               [(self.x - (self.WIDTH / 2)) * self.PIXELS_PER_METER,
-                                (self.y + (self.DIAMETER / 2)) * self.PIXELS_PER_METER]],
-                              (0, 153, 51), line_width=round(display_border_thickness * self.PIXELS_PER_METER),
+        self.outline = Shape.Shape(self.parent, self.globals,
+                              [[(self.x - (self.WIDTH / 2)),
+                                (self.y - (self.DIAMETER / 2))],
+                               [(self.x + (self.WIDTH / 2)),
+                                (self.y - (self.DIAMETER / 2))],
+                               [(self.x + (self.WIDTH / 2)),
+                                (self.y + (self.DIAMETER / 2))],
+                               [(self.x - (self.WIDTH / 2)),
+                                (self.y + (self.DIAMETER / 2))]],
+                              (0, 153, 51), line_width=round(display_border_thickness),
                               fill_color=(0, 204, 0))
 
     def draw(self):
         self.outline.draw()
 
     def move(self, dx, dy): # meters
-        self.outline.move(dx * self.PIXELS_PER_METER, dy * self.PIXELS_PER_METER)
+        self.outline.move(dx, dy)
         self.x = self.x + dx
         self.y = self.y + dy
 
@@ -200,10 +199,10 @@ class Wheel:
         self.angle += angle
         self.angle %= 360
         if rotation_point != "centroid":
-            rotation_point = [rotation_point[0] * self.PIXELS_PER_METER, rotation_point[1] * self.PIXELS_PER_METER]
+            rotation_point = [rotation_point[0], rotation_point[1]]
         self.outline.rotate(angle, rotation_point)
-        self.x = self.outline.get_centroid()[0] / self.PIXELS_PER_METER
-        self.y = self.outline.get_centroid()[1] / self.PIXELS_PER_METER
+        self.x = self.outline.get_centroid()[0]
+        self.y = self.outline.get_centroid()[1]
 
     def rotate_to_angle(self, angle, rotation_point="centroid"):
         self.rotate(angle-self.angle, rotation_point)
