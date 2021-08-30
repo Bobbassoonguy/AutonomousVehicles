@@ -4,6 +4,8 @@ import pygame
 import Vehicle
 import GLOBALS
 import Colors
+import Object
+import Vector
 
 #this is a new change
 class Scenario:
@@ -29,5 +31,5 @@ class Scenario:
         pygame.display.flip()
 
     def addCar(self, x=10, y=10, fill_color=Colors.GREEN_FILL, outline_color=Colors.GREEN_LINE):
-        vehicle_to_add = Vehicle.Vehicle(self, self.globals,x, y, fill_color, outline_color)
+        vehicle_to_add = Vehicle.Vehicle(self, self.globals, x, y, fill_color, outline_color)
         self.vehicles.append(vehicle_to_add)

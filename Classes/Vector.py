@@ -1,10 +1,12 @@
 import math
 
 class Vector:
-    def __init__(self, x, y, unit_vector = False):
+    def __init__(self, x, y, unit_vector=False):
         self.x = x
         self.y = y
         self.unit_vector = unit_vector
+        if self.unit_vector:
+            self.set_magnitude(1)
 
     def magnitude(self):
         if self.unit_vector:
@@ -12,6 +14,10 @@ class Vector:
         return math.sqrt(self.x**2+self.y**2)
 
     def angle(self):  # returns angle from theta=0 (clockwise from +x axis)
+        if self.x == 0:
+            if self.y == 0:
+                return 0
+            return 180+90*self.y / abs(self.y)
         return -math.degrees(math.atan(self.y/self.x)) % 360
 
     def rotate(self, degrees):  # positive -> clockwise negative -> counter clockwise
@@ -27,7 +33,10 @@ class Vector:
             self.y *= scale
 
     def set_magnitude(self, magnitude):  # scales a vector such that it points in the same direction and has passed magnitude
-        if not self.unit_vector:
+        if self.unit_vector:
+            self.x *= 1 / math.sqrt(self.x ** 2 + self.y ** 2)
+            self.y *= 1 / math.sqrt(self.x ** 2 + self.y ** 2)
+        else:
             self.x *= magnitude / math.sqrt(self.x ** 2 + self.y ** 2)
             self.y *= magnitude / math.sqrt(self.x ** 2 + self.y ** 2)
 

@@ -11,6 +11,7 @@ class Shape:
         self.line_width = line_width  # in pixels
         self.fill = fill
         self.fill_color = fill_color
+        self.angle = 0
 
     def get_centroid(self):
         num_points = len(self.points)
@@ -30,6 +31,7 @@ class Shape:
             y = i[1] - rotation_point[1]
             i[0] = x * math.cos(angle) - y * math.sin(angle) + rotation_point[0]
             i[1] = x * math.sin(angle) + y * math.cos(angle) + rotation_point[1]
+        self.angle += angle
 
     def move(self, x_offset, y_offset):
         for i in self.points:

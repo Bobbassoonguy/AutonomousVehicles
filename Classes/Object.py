@@ -1,7 +1,7 @@
 import pygame
 import Shape
 import Colors
-
+import Vector
 
 class Object:
     def __init__(self, parent, globals, points, line_color=Colors.GREEN_LINE, fill_color=Colors.GREEN_FILL):
@@ -11,10 +11,10 @@ class Object:
         self.line_color = line_color
         self.fill_color = fill_color
 
-        self.shape = Shape.Shape(self,self.globals, points, self.line_color, fill_color=self.fill_color)
+        self.shape = Shape.Shape(self, self.globals, points, self.line_color, fill_color=self.fill_color)
 
-        self.velocity = [0, 0]  # a velocity vector in m/s
-        self.acceleration = [0, 0]  # an acceleration vector in m/s^2
+        self.velocity = Vector.Vector(0, 0)  # a velocity vector in m/s
+        self.acceleration = Vector.Vector(0, 0)  # an acceleration vector in m/s^2
 
     def draw(self):
         self.shape.fill_color = self.fill_color
@@ -25,6 +25,9 @@ class Object:
     def position(self):
         return self.shape.get_centroid()
 
+    def angle(self):
+        return self.shape.angle
+
     def move(self, dx, dy):
         self.shape.move(dx, dy)
 
@@ -33,5 +36,9 @@ class Object:
         self.move(x-current[0], y-current[1])
 
     def rotate(self, angle, rotation_point):
-        self.shape.rotate()
+        self.shape.rotate(angle, rotation_point)
+
+    def rotate_to_angle(self, angle, rotation_point):
+        self.rotate(angle - self.shape.angle, rotation_point)
+
 
