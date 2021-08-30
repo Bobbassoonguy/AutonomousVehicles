@@ -2,7 +2,7 @@ import pygame
 
 class CLASSNAME:
     def __init__(self):
-        print("Hello")
+        self.points = []
     def funcone(self):
         #foo bar
         print("Hello")
