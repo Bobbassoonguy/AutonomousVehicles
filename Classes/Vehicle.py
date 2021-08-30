@@ -55,7 +55,7 @@ class Vehicle:
                                     [(self.x + (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER],
                                     [(self.x - (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER]],
                                    (51, 204, 51), line_width=round(display_border_thickness * self.PIXELS_PER_METER),
-                                   fill_color=(153, 255, 153))
+                                   fill_color=(56, 130, 62))
 
     def draw(self):
         # TODO make this position/rotation dependant

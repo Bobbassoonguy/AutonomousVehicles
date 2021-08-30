@@ -11,13 +11,13 @@ main: Scenario = Scenario("Scenario 1 - Create Car")
 clock = pygame.time.Clock()
 
 main.addCar()
-main.vehicles[0].rotate_to_angle(135, rotation_point="centroid")
+main.vehicles[0].rotate_to_angle(90, rotation_point="centroid")
 # print(main.vehicles[0].x, ",", main.vehicles[0].y)
 # print(main.vehicles[0].outline.get_centroid())
-main.vehicles[0].move_to(30, 10)
+main.vehicles[0].move_to(20, 5)
 main.vehicles[0].speed = 0
-main.vehicles[0].acceleration = 5
-main.vehicles[0].current_turn_radius = 5.9
+main.vehicles[0].acceleration = 3.5
+main.vehicles[0].current_turn_radius = 20
 
 while not done:
     clock.tick(main.FPS)

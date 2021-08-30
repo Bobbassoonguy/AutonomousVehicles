@@ -22,7 +22,7 @@ class Scenario:
         pygame.display.set_caption(self.name)
 
     def main(self):
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((18, 20, 26))
         for i in self.vehicles:
             i.draw()
         pygame.display.flip()
