@@ -23,6 +23,7 @@ class Shape:
         return [x/num_points, y/num_points]
 
     def rotate(self, angle, rotation_point="centroid"):
+        self.angle += angle
         angle = math.radians(angle)
         if rotation_point == "centroid":
             rotation_point = self.get_centroid()
@@ -31,7 +32,6 @@ class Shape:
             y = i[1] - rotation_point[1]
             i[0] = x * math.cos(angle) - y * math.sin(angle) + rotation_point[0]
             i[1] = x * math.sin(angle) + y * math.cos(angle) + rotation_point[1]
-        self.angle += angle
 
     def move(self, x_offset, y_offset):
         for i in self.points:

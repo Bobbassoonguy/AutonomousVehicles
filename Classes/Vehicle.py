@@ -72,31 +72,31 @@ class Vehicle:
                                               line_color=self.OUTLINE_COLOR, fill_color=self.OUTLINE_COLOR)
 
         self.back_right_wheel = Object.Object(self, self.globals,
-                                              [[x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT + (
+                                              [[x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE + (
                                                       self.TIRE_DIAMETER / 2),
                                                 y + (self.TRACK / 2) + (self.TIRE_WIDTH / 2)],
-                                               [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT + (
+                                               [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE + (
                                                        self.TIRE_DIAMETER / 2),
                                                 y + (self.TRACK / 2) - (self.TIRE_WIDTH / 2)],
-                                               [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - (
+                                               [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE - (
                                                        self.TIRE_DIAMETER / 2),
                                                 y + (self.TRACK / 2) - (self.TIRE_WIDTH / 2)],
-                                               [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - (
+                                               [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE - (
                                                        self.TIRE_DIAMETER / 2),
                                                 y + (self.TRACK / 2) + (self.TIRE_WIDTH / 2)]],
                                               line_color=self.OUTLINE_COLOR, fill_color=self.FILL_COLOR)
 
         self.back_left_wheel = Object.Object(self, self.globals,
-                                             [[x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT + (
+                                             [[x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE + (
                                                      self.TIRE_DIAMETER / 2),
                                                y - (self.TRACK / 2) + (self.TIRE_WIDTH / 2)],
-                                              [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT + (
+                                              [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE + (
                                                       self.TIRE_DIAMETER / 2),
                                                y - (self.TRACK / 2) - (self.TIRE_WIDTH / 2)],
-                                              [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - (
+                                              [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE - (
                                                       self.TIRE_DIAMETER / 2),
                                                y - (self.TRACK / 2) - (self.TIRE_WIDTH / 2)],
-                                              [x - (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - (
+                                              [x + (self.LENGTH / 2) - self.FRONT_AXLE_TO_FRONT - self.WHEELBASE - (
                                                       self.TIRE_DIAMETER / 2),
                                                y - (self.TRACK / 2) + (self.TIRE_WIDTH / 2)]],
                                              line_color=self.OUTLINE_COLOR, fill_color=self.FILL_COLOR)
@@ -118,8 +118,7 @@ class Vehicle:
             raise ValueError('Attempted a turn radius which was smaller than minimum')
         if right_turn:
             center = self.get_turn_circle_center(turn_radius, right_turn=True)
-            self.body.rotate(turn_degrees, center)
-
+            self.rotate(turn_degrees, center)
             if self.front_left_wheel.angle() != self.body.angle() + math.degrees(
                     math.asin(self.WHEELBASE / turn_radius)):
                 self.front_left_wheel.rotate_to_angle(
@@ -134,7 +133,7 @@ class Vehicle:
 
         else:
             center = self.get_turn_circle_center(turn_radius, right_turn=False)
-            self.body.rotate(-turn_degrees, center)
+            self.rotate(-turn_degrees, center)
             if self.front_right_wheel.angle() != self.body.angle() - math.degrees(
                     math.asin(self.WHEELBASE / turn_radius)):
                 self.front_right_wheel.rotate_to_angle(
@@ -155,18 +154,22 @@ class Vehicle:
                                [center[0] * self.globals.PIXELS_PER_METER, center[1] * self.globals.PIXELS_PER_METER],
                                3, width=3)
 
+    def rotate(self, turn_degrees, rotation_point):
+        self.body.rotate(turn_degrees, rotation_point)
+        for i in self.wheels:
+            i.rotate(turn_degrees, rotation_point)
 
     def get_turn_circle_center(self, turn_radius, right_turn=True):
         if right_turn:
             back = self.back_left_wheel.position()
             center = [
-                back[0] + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.body.angle())),
-                back[1] + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.body.angle()))]
+                back[0] - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.body.angle())),
+                back[1] + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.body.angle()))]
         else:
             back = self.back_right_wheel.position()
             center = [
-                back[0] - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.body.angle())),
-                back[1] - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.body.angle()))]
+                back[0] + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.sin(math.radians(self.body.angle())),
+                back[1] - math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2) * math.cos(math.radians(self.body.angle()))]
         return center
 
     def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
@@ -188,10 +191,10 @@ class Vehicle:
             self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time)
 
         if self.current_turn_radius < 0:  # Left turn
-            self.turn(self.current_turn_radius, math.degrees(distance / self.current_turn_radius), right_turn=False,
+            self.turn(abs(self.current_turn_radius), math.degrees(distance / abs(self.current_turn_radius)), right_turn=False,
                       display_turn_circle=True)
         elif self.current_turn_radius > 0:  # Right turn
-            self.turn(self.current_turn_radius, math.degrees(distance / self.current_turn_radius), right_turn=True,
+            self.turn(abs(self.current_turn_radius), math.degrees(distance / abs(self.current_turn_radius)), right_turn=True,
                       display_turn_circle=True)
         else:
             self.body.move(distance * math.cos(math.radians(self.body.angle() - 90)),
