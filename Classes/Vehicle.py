@@ -4,7 +4,7 @@ import math
 
 #this is a new change
 class Vehicle:
-    def __init__(self, parent, x=10, y=10):
+    def __init__(self, parent, x, y, fill_color, outline_color):
         self.parent = parent
         self.surface = self.parent.screen
         self.PIXELS_PER_METER = self.parent.PIXELS_PER_METER
@@ -20,6 +20,10 @@ class Vehicle:
         self.MIN_SPEED = 0  # m/s eventually will be -9
         self.MAX_ACCELERATION = 3.5  # m/s/s
         self.MIN_ACCELERATION = -9.5 #m/s/s
+
+        #DISPLAY PARAMETERS
+        self.FILL_COLOR = fill_color
+        self.OUTLINE_COLOR = outline_color
 
         # CAR VARIABLES
         self.angle = 0
@@ -54,8 +58,8 @@ class Vehicle:
                                     [(self.x + (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y - (self.LENGTH/2)) * self.PIXELS_PER_METER],
                                     [(self.x + (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER],
                                     [(self.x - (self.WIDTH/2)) * self.PIXELS_PER_METER, (self.y + (self.LENGTH/2)) * self.PIXELS_PER_METER]],
-                                   (51, 204, 51), line_width=round(display_border_thickness * self.PIXELS_PER_METER),
-                                   fill_color=(56, 130, 62))
+                                   self.OUTLINE_COLOR, line_width=round(display_border_thickness * self.PIXELS_PER_METER),
+                                   fill_color=self.FILL_COLOR)
 
     def draw(self):
         # TODO make this position/rotation dependant

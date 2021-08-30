@@ -17,7 +17,6 @@ class Scenario:
         self.vehicles = []  # type: List[Vehicle]
         # vehicles: List[Vehicle] # Python 3.6 syntax, PEP 526
 
-
         self.screen = pygame.display.set_mode([self.CANVAS_SIZE_X, self.CANVAS_SIZE_y])
         pygame.display.set_caption(self.name)
 
@@ -27,6 +26,6 @@ class Scenario:
             i.draw()
         pygame.display.flip()
 
-    def addCar(self):
-        vehicle_to_add = Vehicle.Vehicle(self)
+    def addCar(self, x=10, y=10, fill_color=(56, 130, 62), outline_color=(51, 204, 51)):
+        vehicle_to_add = Vehicle.Vehicle(self, x, y, fill_color, outline_color)
         self.vehicles.append(vehicle_to_add)
