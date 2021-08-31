@@ -177,13 +177,16 @@ class Vehicle:
             self.body.acceleration.set_magnitude(self.MIN_ACCELERATION)
         if self.body.acceleration.magnitude() > self.MAX_ACCELERATION:
             self.body.acceleration.set_magnitude(self.MAX_ACCELERATION)
+        if self.body.velocity.magnitude() > self.MAX_SPEED:
+            self.body.velocity.set_magnitude(self.MAX_SPEED)
+        if self.body.velocity.magnitude() < self.MIN_SPEED:
+            self.body.velocity.set_magnitude(self.MIN_SPEED)
         if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time > self.MAX_SPEED:
             self.body.acceleration.set_magnitude(
                 (self.MAX_SPEED - self.body.velocity.magnitude()) / delta_time)
         if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time < self.MIN_SPEED:
             self.body.acceleration.set_magnitude(
                 (self.MIN_SPEED - self.body.velocity.magnitude()) / delta_time)
-
         distance = self.body.velocity.magnitude() * delta_time + 0.5 * self.body.acceleration.magnitude() * delta_time ** 2
         self.body.velocity.set_magnitude(self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time)
 
