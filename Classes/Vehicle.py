@@ -106,7 +106,7 @@ class Vehicle:
         print("New Car initialized")
 
     def draw(self):
-        self.body.draw(draw_velocity_vector=True)
+        self.body.draw(draw_velocity_vector=True, draw_acceleration_vector=True)
 
         self.front_right_wheel.draw()
         self.front_left_wheel.draw()
@@ -128,8 +128,6 @@ class Vehicle:
                     self.body.angle() + math.degrees(math.asin(self.WHEELBASE / math.sqrt(
                         self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))),
                     self.front_right_wheel.position())
-            # self.body.velocity.rotate(turn_degrees)
-            # self.body.acceleration.rotate(turn_degrees)
 
         else:
             center = self.get_turn_circle_center(turn_radius, right_turn=False)
@@ -143,8 +141,6 @@ class Vehicle:
                     self.body.angle() - math.degrees(math.asin(self.WHEELBASE / math.sqrt(
                         self.WHEELBASE ** 2 + (-self.TRACK + math.sqrt(turn_radius ** 2 - self.WHEELBASE ** 2)) ** 2))),
                     self.front_left_wheel.position())
-            # self.body.velocity.rotate(-turn_degrees)
-            # self.body.acceleration.rotate(-turn_degrees)
 
         if display_turn_circle:
             pygame.draw.circle(self.surface, [0, 0, 255],
@@ -158,7 +154,6 @@ class Vehicle:
         self.body.rotate(turn_degrees, rotation_point)
         for i in self.wheels:
             i.rotate(turn_degrees, rotation_point)
-        print(self.body.angle())
         self.body.velocity.rotate_to(self.body.angle())
         self.body.acceleration.rotate_to(self.body.angle())
 
@@ -177,16 +172,17 @@ class Vehicle:
 
     def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
         # delta_time. (Usually pass 1/FPS as delta_time)
-        # if self.body.acceleration.magnitude() < self.MIN_ACCELERATION:
-        #     self.body.acceleration.set_magnitude(self.MIN_ACCELERATION)
-        # if self.body.acceleration.magnitude() > self.MAX_ACCELERATION:
-        #     self.body.acceleration.magnitude.set_magnitude(self.MAX_ACCELERATION)
-        # if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time > self.MAX_SPEED:
-        #     self.body.acceleration.magnitude.set_magnitude(
-        #         (self.MAX_SPEED - self.body.velocity.magnitude()) / delta_time)
-        # if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time < self.MIN_SPEED:
-        #     self.body.acceleration.magnitude.set_magnitude(
-        #         (self.MIN_SPEED - self.body.velocity.magnitude()) / delta_time)
+        #TODO Fix these speed and accel limits
+        if self.body.acceleration.magnitude() < self.MIN_ACCELERATION:
+            self.body.acceleration.set_magnitude(self.MIN_ACCELERATION)
+        if self.body.acceleration.magnitude() > self.MAX_ACCELERATION:
+            self.body.acceleration.set_magnitude(self.MAX_ACCELERATION)
+        if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time > self.MAX_SPEED:
+            self.body.acceleration.set_magnitude(
+                (self.MAX_SPEED - self.body.velocity.magnitude()) / delta_time)
+        if self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time < self.MIN_SPEED:
+            self.body.acceleration.set_magnitude(
+                (self.MIN_SPEED - self.body.velocity.magnitude()) / delta_time)
 
         distance = self.body.velocity.magnitude() * delta_time + 0.5 * self.body.acceleration.magnitude() * delta_time ** 2
         self.body.velocity.set_magnitude(self.body.velocity.magnitude() + self.body.acceleration.magnitude() * delta_time)

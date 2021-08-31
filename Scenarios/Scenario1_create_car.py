@@ -16,7 +16,7 @@ main.globals.PIXELS_PER_METER = 20
 main.addCar(x=20, y=10)
 main.vehicles[0].rotate(45, main.vehicles[0].body.position())
 main.vehicles[0].body.velocity.x = 10
-main.vehicles[0].body.acceleration.x = 0
+main.vehicles[0].body.acceleration.x = 10
 main.vehicles[0].current_turn_radius = 10
 
 # main.addCar(x=20, y=45, fill_color=Colors.ORANGE_FILL, outline_color=Colors.ORANGE_LINE)
@@ -29,11 +29,6 @@ while not done:
     main.main()
 
     main.vehicles[0].go(1/main.globals.FPS)
-    print("Vel: ", main.vehicles[0].body.velocity.magnitude())
-    # print("Accel: ", main.vehicles[0].body.acceleration.magnitude())
-    # main.vehicles[0].turn(5.9, 1, right_turn=False, display_turn_circle=True)
-    #
-    # main.vehicles[1].go(1 / main.globals.FPS)
 
     pygame.display.flip()
 
