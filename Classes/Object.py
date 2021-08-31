@@ -16,11 +16,14 @@ class Object:
         self.velocity = Vector.Vector(0, 0)  # a velocity vector in m/s
         self.acceleration = Vector.Vector(0, 0)  # an acceleration vector in m/s^2
 
-    def draw(self):
+    def draw(self, draw_velocity_vector=False, draw_acceleration_vector=False):
         self.shape.fill_color = self.fill_color
         self.shape.color = self.line_color
         self.shape.globals = self.globals
         self.shape.draw()
+
+        if draw_velocity_vector:
+            pygame.draw.line(self.globals.MAIN_SURFACE, (255, 0, 0), [self.position()[0] * self.globals.PIXELS_PER_METER, self.position()[1] * self.globals.PIXELS_PER_METER], [self.velocity.x * self.globals.PIXELS_PER_METER, self.velocity.y * self.globals.PIXELS_PER_METER],4)
 
     def position(self):
         return self.shape.get_centroid()

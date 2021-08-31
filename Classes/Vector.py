@@ -24,8 +24,8 @@ class Vector:
         return self.rotate_to(degrees+self.angle())
 
     def rotate_to(self, degrees):  # rotates the vector to an angle from theta=0 (clockwise from +x axis)
-        self.x = math.cos(math.radians(degrees))
-        self.y = -math.sin(math.radians(degrees))
+        self.x = self.magnitude() * math.cos(math.radians(degrees))
+        self.y = self.magnitude() * -math.sin(math.radians(degrees))
 
     def scale(self, scale):  # scales vector by its magnitude
         if not self.unit_vector:
