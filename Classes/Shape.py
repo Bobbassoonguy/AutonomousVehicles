@@ -24,6 +24,7 @@ class Shape:
 
     def rotate(self, angle, rotation_point="centroid"):
         self.angle += angle
+        self.angle %= 360
         angle = math.radians(angle)
         if rotation_point == "centroid":
             rotation_point = self.get_centroid()
