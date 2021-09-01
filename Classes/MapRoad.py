@@ -25,3 +25,7 @@ class MapRoad:
         for i in self.segments:
             i.draw_as_line(road_nodes)
 
+    def draw_road_segments(self):
+        for i in self.segments:
+            i.draw_road_segment()
+

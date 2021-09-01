@@ -10,12 +10,9 @@ import RoadMap
 
 #this is a new change
 class Scenario:
-    def __init__(self, name):
+    def __init__(self, name, disp_x=200, disp_y=200, pix=5):
         #GLOBAL VARIABLES
-        self.globals = GLOBALS.Globals()
-        self.globals.CANVAS_SIZE_X = 1000
-        self.globals.CANVAS_SIZE_y = 1000
-        self.globals.PIXELS_PER_METER = 20
+        self.globals = GLOBALS.Globals(disp_x=disp_x, disp_y=disp_y, pix=pix)
         self.globals.ROAD_MIN_CURVE_RAD = 12
         self.globals.FPS = 60
 
@@ -34,7 +31,7 @@ class Scenario:
 
         self.road_map.draw_lines(road_segment_points=True)
 
-    def addCar(self, x=10, y=10, fill_color=Colors.GREEN_FILL, outline_color=Colors.GREEN_LINE):
+    def addCar(self, x=10, y=10, fill_color=Colors.CAR_GREEN_FILL, outline_color=Colors.CAR_GREEN_LINE):
         vehicle_to_add = Vehicle.Vehicle(self, self.globals, x, y, fill_color, outline_color)
         self.vehicles.append(vehicle_to_add)
 

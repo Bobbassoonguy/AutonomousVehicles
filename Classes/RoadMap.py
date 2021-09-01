@@ -15,3 +15,7 @@ class RoadMap:
     def draw_lines(self, road_segment_points=False):
         for i in self.roads:
             i.draw_as_line(road_nodes=road_segment_points)
+
+    def draw_roads(self):
+        for i in self.roads:
+            i.draw_road_segments()

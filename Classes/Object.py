@@ -4,7 +4,7 @@ import Colors
 import Vector
 
 class Object:
-    def __init__(self, parent, globals, points, line_color=Colors.GREEN_LINE, fill_color=Colors.GREEN_FILL):
+    def __init__(self, parent, globals, points, line_color=Colors.CAR_GREEN_LINE, fill_color=Colors.CAR_GREEN_FILL):
         self.parent = parent
         self.globals = globals
         self.surface = self.globals.MAIN_SURFACE
