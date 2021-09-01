@@ -10,8 +10,24 @@ class Vector:
             self.set_magnitude(1)
 
     def __add__(self, a):
-        new_vector = Vector(self.x + a.x, self.y + a.y)
+        if type(a) is Vector:
+            new_vector = Vector(self.x + a.x, self.y + a.y)
+        elif type(a) is list and len(a) == 2:
+            new_vector = Vector(self.x + a[0], self.y + a[1])
+        else:
+            raise Exception("Can only add Vector or List to type: Vector")
         return new_vector
+
+    def __iadd__(self, other):
+        if type(other) is Vector:
+            self.x += other.x
+            self.y += other.y
+        elif type(other) is list and len(other) == 2:
+            self.x += other[0]
+            self.y += other[1]
+        else:
+            raise Exception("Can only add Vector or List to type: Vector")
+        return self
 
     def draw_starting_at(self, globals, point, color=(255, 0, 0)):
         pygame.draw.aaline(globals.MAIN_SURFACE,color,self.globals.point_to_pixels(point),self.globals.point_to_pixels(self.list()))
