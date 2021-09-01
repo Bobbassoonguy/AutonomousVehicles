@@ -6,6 +6,7 @@ import GLOBALS
 import Colors
 import Object
 import Vector
+import RoadMap
 
 #this is a new change
 class Scenario:
@@ -22,16 +23,18 @@ class Scenario:
         self.vehicles = []  # type: List[Vehicle]
         # vehicles: List[Vehicle] # Python 3.6 syntax, PEP 526
 
+        self.road_map = RoadMap.RoadMap(self,self.globals)
+
         pygame.display.set_caption(self.name)
 
-    def main(self):
+    def draw(self):
         self.globals.MAIN_SURFACE.fill((18, 20, 26))
         for i in self.vehicles:
             i.draw()
-        pygame.display.flip()
+
+        self.road_map.draw_lines(road_segment_points=True)
 
     def addCar(self, x=10, y=10, fill_color=Colors.GREEN_FILL, outline_color=Colors.GREEN_LINE):
         vehicle_to_add = Vehicle.Vehicle(self, self.globals, x, y, fill_color, outline_color)
         self.vehicles.append(vehicle_to_add)
-
 
