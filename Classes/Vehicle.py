@@ -172,7 +172,6 @@ class Vehicle:
 
     def go(self, delta_time):  # moves the car according to current_turn_radius to place it would be after
         # delta_time. (Usually pass 1/FPS as delta_time)
-        #TODO Fix these speed and accel limits
         if self.body.acceleration.magnitude() < self.MIN_ACCELERATION:
             self.body.acceleration.set_magnitude(self.MIN_ACCELERATION)
         if self.body.acceleration.magnitude() > self.MAX_ACCELERATION:
