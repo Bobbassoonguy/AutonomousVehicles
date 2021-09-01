@@ -23,9 +23,11 @@ class Object:
         self.shape.draw()
 
         if draw_velocity_vector:
-            pygame.draw.line(self.globals.MAIN_SURFACE, (255, 0, 0), [self.position()[0] * self.globals.PIXELS_PER_METER, self.position()[1] * self.globals.PIXELS_PER_METER], [(self.position()[0] + self.velocity.x) * self.globals.PIXELS_PER_METER, (self.position()[1] + self.velocity.y) * self.globals.PIXELS_PER_METER],2)
+            self.velocity.draw_starting_at(self.globals,self.position(), (255, 0, 0))
+            # pygame.draw.line(self.globals.MAIN_SURFACE, (255, 0, 0), [self.position()[0] * self.globals.PIXELS_PER_METER, self.position()[1] * self.globals.PIXELS_PER_METER], [(self.position()[0] + self.velocity.x) * self.globals.PIXELS_PER_METER, (self.position()[1] + self.velocity.y) * self.globals.PIXELS_PER_METER],2)
         if draw_acceleration_vector:
-            pygame.draw.line(self.globals.MAIN_SURFACE, (0, 255, 0), [self.position()[0] * self.globals.PIXELS_PER_METER, self.position()[1] * self.globals.PIXELS_PER_METER], [(self.position()[0] + self.acceleration.x) * self.globals.PIXELS_PER_METER, (self.position()[1] + self.acceleration.y) * self.globals.PIXELS_PER_METER],2)
+            self.acceleration.draw_starting_at(self.globals, self.position(), (0, 255, 0))
+            # pygame.draw.line(self.globals.MAIN_SURFACE, (0, 255, 0), [self.position()[0] * self.globals.PIXELS_PER_METER, self.position()[1] * self.globals.PIXELS_PER_METER], [(self.position()[0] + self.acceleration.x) * self.globals.PIXELS_PER_METER, (self.position()[1] + self.acceleration.y) * self.globals.PIXELS_PER_METER],2)
 
     def position(self):
         return self.shape.get_centroid()
