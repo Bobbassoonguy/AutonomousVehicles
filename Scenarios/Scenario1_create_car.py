@@ -20,7 +20,7 @@ main.globals.FPS = 30
 while not done:
     clock.tick(main.globals.FPS)
     main.globals.MAIN_SURFACE.fill((18, 20, 26))
-    main.road_map.add_road([[100,1],[3,3],[3,6],[5,15],[25,50]])
+    main.road_map.add_road([[30,1],[3,3],[3,6],[5,15],[25,30]])
     main.road_map.draw_lines(road_segment_points=True)
 
     #main.draw()
