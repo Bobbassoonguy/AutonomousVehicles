@@ -1,5 +1,6 @@
 import pygame
 import Vector
+import RoadSegment
 
 class MapSegment:
     def __init__(self, parent_MapRoad, globals, start_point, end_point, arc_radius=0):
