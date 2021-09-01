@@ -9,6 +9,10 @@ class Vector:
         if self.unit_vector:
             self.set_magnitude(1)
 
+    def __add__(self, a):
+        new_vector = Vector(self.x + a.x, self.y + a.y)
+        return new_vector
+
     def draw_starting_at(self, globals, point, color=(255, 0, 0)):
         pygame.draw.aaline(globals.MAIN_SURFACE,color,self.globals.point_to_pixels(point),self.globals.point_to_pixels(self.list()))
 
