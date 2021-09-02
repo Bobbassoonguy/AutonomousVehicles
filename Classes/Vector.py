@@ -91,3 +91,7 @@ class Vector:
 
     def list(self):
         return [self.x, self.y]
+
+
+def get_Vector_between_points(start_point, end_point):
+    return Vector(end_point[0]-start_point[0], end_point[1]-start_point[1])

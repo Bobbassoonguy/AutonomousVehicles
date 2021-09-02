@@ -18,7 +18,10 @@ class MapRoad:
         self.segments = []
 
         for i in range(len(self.points) - 1):
-            new_segment = MapSegment.MapSegment(self, self.globals, self.points[i], self.points[i+1])
+            if len(self.points[i]) == 3:
+                new_segment = MapSegment.MapSegment(self, self.globals, self.points[i], self.points[i + 1], arc_radius=self.points[i][2])
+            else:
+                new_segment = MapSegment.MapSegment(self, self.globals, self.points[i], self.points[i+1])
             self.segments.append(new_segment)
 
     def draw_as_line(self, road_nodes=False):

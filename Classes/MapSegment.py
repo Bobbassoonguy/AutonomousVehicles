@@ -11,7 +11,7 @@ class MapSegment:
         self.end_point = end_point
         self.arc_radius = arc_radius
 
-        self.road_segment = RoadSegment.RoadSegment(self,self.globals,self.start_point,self.end_point)
+        self.road_segment = RoadSegment.RoadSegment(self,self.globals,[self.start_point[0],self.start_point[1]], [self.end_point[0], self.end_point[1]], arc_radius=self.arc_radius)
 
     def get_as_vector(self):
         return Vector.Vector(self.end_point[0]-self.start_point[0], self.end_point[1]-self.start_point[1])
