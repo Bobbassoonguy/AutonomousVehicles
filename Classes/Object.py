@@ -7,7 +7,7 @@ class Object:
     def __init__(self, parent, globals, points, line_color=Colors.CAR_GREEN_LINE, fill_color=Colors.CAR_GREEN_FILL):
         self.parent = parent
         self.globals = globals
-        self.surface = self.globals.MAIN_SURFACE
+        self.surface = self.globals.VEHICLE_SURFACE
         self.line_color = line_color
         self.fill_color = fill_color
 

@@ -9,9 +9,15 @@ class Globals:
         self.PIXELS_PER_METER = pix
         self.CANVAS_SIZE_X = disp_x
         self.CANVAS_SIZE_y = disp_y
+        self.GUI_WIDTH = 300
         self.ROAD_MIN_CURVE_RAD = pix
         self.FPS = 60
-        self.MAIN_SURFACE = pygame.display.set_mode([self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)])
+        self.BACKGROUND = pygame.display.set_mode([self.pixels(self.CANVAS_SIZE_X)+self.GUI_WIDTH, self.pixels(self.CANVAS_SIZE_y)])
+        self.GUI_SURFACE = pygame.Surface((self.GUI_WIDTH,self.pixels(self.CANVAS_SIZE_y)))
+        #self.GUI_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
+        self.ROAD_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
+        self.VEHICLE_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
+
 
     def point_to_pixels(self, point):
         return [point[0] * self.PIXELS_PER_METER, point[1] * self.PIXELS_PER_METER]
@@ -51,12 +57,12 @@ class Globals:
         center_2_to_start_v.draw_starting_at(self, center_2)
         center_2_to_end = math.radians(center_2_to_end_v.angle())
 
-        pygame.draw.circle(self.MAIN_SURFACE, Colors.CAR_BLUE_LINE, self.point_to_pixels(points_vector1.list()),
+        pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_BLUE_LINE, self.point_to_pixels(points_vector1.list()),
                            self.pixels(arc_radius), 1)
-        pygame.draw.circle(self.MAIN_SURFACE, Colors.CAR_BLUE_LINE, self.point_to_pixels(points_vector2.list()),
+        pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_BLUE_LINE, self.point_to_pixels(points_vector2.list()),
                            self.pixels(arc_radius), 1)
-        pygame.draw.circle(self.MAIN_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(start_point), 3)
-        pygame.draw.circle(self.MAIN_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(end_point), 3)
+        pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(start_point), 3)
+        pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(end_point), 3)
 
         pygame.draw.arc(surface, color, (
             self.pixels(center_1[0] - arc_radius), self.pixels(center_1[1] - arc_radius), 2 * self.pixels(arc_radius), 2 * self.pixels(arc_radius)),

@@ -17,10 +17,10 @@ class MapSegment:
         return Vector.Vector(self.end_point[0]-self.start_point[0], self.end_point[1]-self.start_point[1])
 
     def draw_as_line(self, endpoints=False):
-        pygame.draw.aaline(self.globals.MAIN_SURFACE,Colors.MAP_ORANGE,self.globals.point_to_pixels(self.start_point), self.globals.point_to_pixels(self.end_point))
+        pygame.draw.aaline(self.globals.ROAD_SURFACE, Colors.MAP_ORANGE, self.globals.point_to_pixels(self.start_point), self.globals.point_to_pixels(self.end_point))
         if endpoints:
-            pygame.draw.circle(self.globals.MAIN_SURFACE, Colors.MAP_ORANGE, self.globals.point_to_pixels(self.start_point), 3)
-            pygame.draw.circle(self.globals.MAIN_SURFACE, Colors.MAP_ORANGE, self.globals.point_to_pixels(self.end_point), 3)
+            pygame.draw.circle(self.globals.ROAD_SURFACE, Colors.MAP_ORANGE, self.globals.point_to_pixels(self.start_point), 3)
+            pygame.draw.circle(self.globals.ROAD_SURFACE, Colors.MAP_ORANGE, self.globals.point_to_pixels(self.end_point), 3)
 
     def draw_road_segment(self):
         self.road_segment.draw()

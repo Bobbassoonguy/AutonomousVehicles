@@ -5,7 +5,7 @@ class Shape:
     def __init__(self, parent, globals, points, color, line_width=4, fill=True, fill_color=None):
         self.parent = parent
         self.globals = globals
-        self.surface = self.globals.MAIN_SURFACE
+        self.surface = self.globals.VEHICLE_SURFACE
         self.points = points  # in meters
         self.color = color
         self.line_width = line_width  # in pixels

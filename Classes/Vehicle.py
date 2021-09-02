@@ -10,7 +10,7 @@ class Vehicle:
     def __init__(self, parent, globals, x, y, fill_color, outline_color):
         self.parent = parent
         self.globals = globals
-        self.surface = self.globals.MAIN_SURFACE
+        self.surface = self.globals.VEHICLE_SURFACE
 
         # CAR PARAMETERS
         self.LENGTH = 4.5  # meters

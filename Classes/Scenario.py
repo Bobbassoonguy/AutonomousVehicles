@@ -7,6 +7,8 @@ import Colors
 import Object
 import Vector
 import RoadMap
+import pygame_gui
+import sim_GUI
 
 #this is a new change
 class Scenario:
@@ -24,12 +26,21 @@ class Scenario:
 
         pygame.display.set_caption(self.name)
 
+        self.GUI = sim_GUI.sim_GUI(self.globals, self.globals.GUI_SURFACE)
+
     def draw(self):
-        self.globals.MAIN_SURFACE.fill((18, 20, 26))
         for i in self.vehicles:
             i.draw()
-
         self.road_map.draw_lines(road_segment_points=True)
+
+        pygame.draw.rect(self.globals.VEHICLE_SURFACE, Colors.MAP_CYAN, (150, 125, 250, 175), 6, 4)
+
+
+        self.globals.BACKGROUND.blit(self.globals.ROAD_SURFACE, (0, 0))
+        self.globals.BACKGROUND.blit(self.globals.VEHICLE_SURFACE, (0, 0))
+
+        self.GUI.draw_ui()
+        pygame.display.flip()
 
     def addCar(self, x=10, y=10, fill_color=Colors.CAR_GREEN_FILL, outline_color=Colors.CAR_GREEN_LINE):
         vehicle_to_add = Vehicle.Vehicle(self, self.globals, x, y, fill_color, outline_color)
