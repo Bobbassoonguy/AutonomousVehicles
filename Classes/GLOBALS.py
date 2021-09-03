@@ -13,11 +13,13 @@ class Globals:
         self.ROAD_MIN_CURVE_RAD = pix
         self.FPS = 60
         self.BACKGROUND = pygame.display.set_mode([self.pixels(self.CANVAS_SIZE_X)+self.GUI_WIDTH, self.pixels(self.CANVAS_SIZE_y)])
-        self.GUI_SURFACE = pygame.Surface((self.GUI_WIDTH,self.pixels(self.CANVAS_SIZE_y)))
+        self.GUI_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X)+self.GUI_WIDTH, self.pixels(self.CANVAS_SIZE_y)),pygame.SRCALPHA, 32)
+        self.GUI_SURFACE = self.GUI_SURFACE.convert_alpha()
         #self.GUI_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
-        self.ROAD_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
-        self.VEHICLE_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
-
+        self.ROAD_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)),pygame.SRCALPHA, 32)
+        self.ROAD_SURFACE = self.ROAD_SURFACE.convert_alpha()
+        self.VEHICLE_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)),pygame.SRCALPHA, 32)
+        self.VEHICLE_SURFACE = self.VEHICLE_SURFACE.convert_alpha()
 
     def point_to_pixels(self, point):
         return [point[0] * self.PIXELS_PER_METER, point[1] * self.PIXELS_PER_METER]

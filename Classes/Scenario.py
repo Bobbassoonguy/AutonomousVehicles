@@ -33,11 +33,13 @@ class Scenario:
             i.draw()
         self.road_map.draw_lines(road_segment_points=True)
 
-        pygame.draw.rect(self.globals.VEHICLE_SURFACE, Colors.MAP_CYAN, (150, 125, 250, 175), 6, 4)
+
 
 
         self.globals.BACKGROUND.blit(self.globals.ROAD_SURFACE, (0, 0))
         self.globals.BACKGROUND.blit(self.globals.VEHICLE_SURFACE, (0, 0))
+
+        # pygame.draw.rect(self.globals.GUI_SURFACE, Colors.MAP_CYAN, (1000, 125, 250, 175), 6, 4)
 
         self.GUI.draw_ui()
         pygame.display.flip()

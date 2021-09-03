@@ -22,7 +22,7 @@ main.road_map.add_road([[30,20],[180,10,10],[170,150],[120,80],[25,30]])
 main.road_map.draw_roads()
 main.road_map.draw_lines(road_segment_points=True)
 main.globals.draw_arc(main.globals.VEHICLE_SURFACE, Colors.CAR_PURPLE_FILL, [30, 30], [80, 60], 30, 10)
-main.globals.GUI_SURFACE.fill((221, 221, 221))
+
 
 while not done:
     clock.tick(main.globals.FPS)
