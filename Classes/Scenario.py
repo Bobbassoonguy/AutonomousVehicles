@@ -42,7 +42,7 @@ class Scenario:
         # pygame.draw.rect(self.globals.GUI_SURFACE, Colors.MAP_CYAN, (1000, 125, 250, 175), 6, 4)
 
         self.GUI.draw_ui()
-        pygame.display.flip()
+        pygame.display.update()
 
     def addCar(self, x=10, y=10, fill_color=Colors.CAR_GREEN_FILL, outline_color=Colors.CAR_GREEN_LINE):
         vehicle_to_add = Vehicle.Vehicle(self, self.globals, x, y, fill_color, outline_color)

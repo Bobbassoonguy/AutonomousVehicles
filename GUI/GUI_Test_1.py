@@ -29,7 +29,7 @@ while is_running:
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == hello_button:
-                    print('Hello World!')
+                    hello_button.hide()
 
         manager.process_events(event)
 
