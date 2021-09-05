@@ -31,7 +31,10 @@ class Vector:
         return self
 
     def draw_starting_at(self, globals, point, color=(255, 0, 0)):
-        pygame.draw.aaline(globals.VEHICLE_SURFACE, color, globals.point_to_pixels(point), globals.point_to_pixels(self.list()))
+        point2 = self.list()
+        point2[0] += point[0]
+        point2[1] += point[1]
+        pygame.draw.aaline(globals.VEHICLE_SURFACE,color,globals.point_to_pixels(point),globals.point_to_pixels(point2))
 
     def magnitude(self):
         if self.unit_vector:

@@ -54,9 +54,9 @@ class Globals:
         center_2 = points_vector2.list()
         center_2_to_start_v = Vector.get_Vector_between_points(center_2, start_point)
         center_2_to_end_v = Vector.get_Vector_between_points(center_2, end_point)
-        center_2_to_end_v.draw_starting_at(self,center_2)
+        center_2_to_end_v.draw_starting_at(self, center_2)
         center_2_to_start = math.radians(center_2_to_start_v.angle())
-        center_2_to_start_v.draw_starting_at(self, center_2)
+        center_2_to_start_v.draw_starting_at(self, center_2, color=(255, 255, 0))
         center_2_to_end = math.radians(center_2_to_end_v.angle())
 
         pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_BLUE_LINE, self.point_to_pixels(points_vector1.list()),
@@ -66,10 +66,26 @@ class Globals:
         pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(start_point), 3)
         pygame.draw.circle(self.VEHICLE_SURFACE, Colors.CAR_ORANGE_LINE, self.point_to_pixels(end_point), 3)
 
-        pygame.draw.arc(surface, color, (
-            self.pixels(center_1[0] - arc_radius), self.pixels(center_1[1] - arc_radius), 2 * self.pixels(arc_radius), 2 * self.pixels(arc_radius)),
-                        center_1_to_start, center_1_to_end,width)
-        pygame.draw.arc(surface, color, (
-            self.pixels(center_2[0] - arc_radius), self.pixels(center_2[1] - arc_radius), 2 * self.pixels(arc_radius),
-            2 * self.pixels(arc_radius)),
-                        center_2_to_start, center_2_to_end,width)
+        if center_1_to_start-center_1_to_end <= math.pi:
+            pygame.draw.arc(surface, color, (
+                self.pixels(center_1[0] - arc_radius), self.pixels(center_1[1] - arc_radius),
+                2 * self.pixels(arc_radius), 2 * self.pixels(arc_radius)),
+                            -center_1_to_start, -center_1_to_end, width)
+        else:
+            pygame.draw.arc(surface, color, (
+                self.pixels(center_1[0] - arc_radius), self.pixels(center_1[1] - arc_radius),
+                2 * self.pixels(arc_radius), 2 * self.pixels(arc_radius)),
+                            -center_1_to_end, -center_1_to_start, width)
+
+        if center_2_to_start-center_2_to_end <= math.pi:
+            pygame.draw.arc(surface, color, (
+                self.pixels(center_2[0] - arc_radius), self.pixels(center_2[1] - arc_radius),
+                2 * self.pixels(arc_radius),
+                2 * self.pixels(arc_radius)),
+                            -center_2_to_start, -center_2_to_end, width)
+        else:
+            pygame.draw.arc(surface, color, (
+                self.pixels(center_2[0] - arc_radius), self.pixels(center_2[1] - arc_radius),
+                2 * self.pixels(arc_radius),
+                2 * self.pixels(arc_radius)),
+                            -center_2_to_end, -center_2_to_start, width)
