@@ -19,7 +19,7 @@ class GUIVehicle:
 
         self.INTER_MARGINS = 2
         self.LABEL_HEIGHT = 32
-        self.OVERALL_WIDTH = 150
+        self.OVERALL_WIDTH = 175
         self.TEXT_BOX_HEIGHT = 80
 
         info_string = "<font face=Roboto color=regular_text><font color=#FFFFFF size=3>Position:     " + str(self.vehicle_pos) + "<br>Velocity:     " + str(
@@ -27,14 +27,19 @@ class GUIVehicle:
             self.vehicle_turn_rad) + "</font>"
 
         self.info_shown = False
+        self.turn_circles_on = False
 
         self.label = pygame_gui.elements.ui_text_box.UITextBox("<font face=Roboto color=regular_text><font color=" + self.color + " size=3><b>" + self.name + "</b>",
                                                                           pygame.Rect(self.x, self.y,
-                                                                                      self.OVERALL_WIDTH - self.INTER_MARGINS - self.LABEL_HEIGHT,
+                                                                                      self.OVERALL_WIDTH + (2*(-self.INTER_MARGINS - self.LABEL_HEIGHT)),
                                                                                       self.LABEL_HEIGHT), manager=self.manager)
 
+        self.turn_circle_toggle = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(self.x + (self.OVERALL_WIDTH - (2*self.LABEL_HEIGHT)-self.INTER_MARGINS),self.y, self.LABEL_HEIGHT, self.LABEL_HEIGHT),
+                                                    text="·",
+                                                    manager=self.manager)
+
         self.info_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(self.x + (self.OVERALL_WIDTH - self.LABEL_HEIGHT),self.y, self.LABEL_HEIGHT, self.LABEL_HEIGHT),
-                                                    text="v",
+                                                    text="V",
                                                     manager=self.manager)
         self.info_box = pygame_gui.elements.ui_text_box.UITextBox(info_string,
                                                                           pygame.Rect(self.x, self.y+self.LABEL_HEIGHT+self.INTER_MARGINS,
@@ -44,24 +49,29 @@ class GUIVehicle:
     def update_info_box_toggle(self):
         if self.info_shown:
             self.info_box.show()
-            self.info_button.set_text("^")
+            self.info_button.set_text("Λ")
         else:
             self.info_box.hide()
-            self.info_button.set_text("v")
+            self.info_button.set_text("V")
 
     def update_params(self, pos, vel, accel, rad):
-        self.vehicle_pos = pos
-        self.vehicle_vel = vel
-        self.vehicle_accel = accel
-        self.vehicle_turn_rad = round(rad, 2)
-        print("self.vehicle_pos:", self.vehicle_pos)
+        #TODO it should only update this when the box is shown
+        decimal_places = 1
+        self.vehicle_pos = [round(pos[0], decimal_places), round(pos[1], decimal_places)]
+        self.vehicle_vel = [round(vel[0], decimal_places), round(vel[1], decimal_places)]
+        self.vehicle_accel = [round(accel[0], decimal_places), round(accel[1], decimal_places)]
+        self.vehicle_turn_rad = round(rad, decimal_places)
 
         info_string = "<font face=Roboto color=regular_text><font color=#FFFFFF size=3>Position:     " + str(
             self.vehicle_pos) + "<br>Velocity:     " + str(
             self.vehicle_vel) + "<br>Acceleration: " + str(self.vehicle_accel) + "<br>Turn Radius:   " + str(
             self.vehicle_turn_rad) + "</font>"
 
-        self.info_box.html_text = info_string
+        self.info_box.kill()
+        self.info_box = pygame_gui.elements.ui_text_box.UITextBox(info_string,
+                                                                          pygame.Rect(self.x, self.y+self.LABEL_HEIGHT+self.INTER_MARGINS,
+                                                                                      self.OVERALL_WIDTH, self.TEXT_BOX_HEIGHT), manager=self.manager)
+        self.update_info_box_toggle()
 
     def get_height(self):
         if self.info_shown:
@@ -75,6 +85,18 @@ class GUIVehicle:
         self.label.set_position((self.x, self.y))
         self.info_button.set_position((self.x + (self.OVERALL_WIDTH - self.LABEL_HEIGHT), self.y))
         self.info_box.set_position((self.x, self.y+self.LABEL_HEIGHT+self.INTER_MARGINS))
+        self.turn_circle_toggle.set_position((self.x + (self.OVERALL_WIDTH - (2*self.LABEL_HEIGHT)-self.INTER_MARGINS), self.y))
+
+    def toggle_turn_circle_indicator(self):
+        if self.turn_circles_on:
+            self.turn_circles_on = False
+            self.turn_circle_toggle.set_text("·")
+        else:
+            self.turn_circles_on = True
+            self.turn_circle_toggle.set_text("Θ")
+
+
+
 
 
 class SimTestGUI:
@@ -115,7 +137,11 @@ class SimTestGUI:
     def make_vehicles(self):
         disp_y_inc = self.vehicles_display_position_y
         for i in range(self.num_of_vehicles):
-            self.vehicles.append(GUIVehicle(self.manager, self.vehicles_display_position_x, disp_y_inc, "Vehicle "+str(i+1)))
+            if i == 2:
+                color = (0,255,0)
+            else:
+                color = (255, 255, 255)
+            self.vehicles.append(GUIVehicle(self.manager, self.vehicles_display_position_x, disp_y_inc, "Vehicle "+str(i+1),color=color))
             disp_y_inc += self.vehicles[i].get_height() + 10
 
     def update_vehicle_list_positions(self):
@@ -135,6 +161,9 @@ class SimTestGUI:
                     i.info_shown = not i.info_shown
                     i.update_info_box_toggle()
                     self.update_vehicle_list_positions()
+                if event.ui_element == i.turn_circle_toggle:
+                    i.toggle_turn_circle_indicator()
+                    #TODO actually make the turn circles display
 
     def manager_event_process(self, event):
         self.manager.process_events(event)
