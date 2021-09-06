@@ -8,7 +8,7 @@ import Object
 import Vector
 import RoadMap
 import pygame_gui
-import sim_GUI
+import GUI_test_2
 
 #this is a new change
 class Scenario:
@@ -26,20 +26,21 @@ class Scenario:
 
         pygame.display.set_caption(self.name)
 
-        self.GUI = sim_GUI.sim_GUI(self.globals, self.globals.GUI_SURFACE)
+        self.GUI = GUI_test_2.SimTestGUI(self.globals.BACKGROUND, self.globals.pixels(self.globals.CANVAS_SIZE_X)+self.globals.GUI_WIDTH, self.globals.pixels(self.globals.CANVAS_SIZE_y))
+
+        self.globals.BACKDROP.fill((18, 20, 26))  # (18, 20, 26)
+
 
     def draw(self):
         for i in self.vehicles:
             i.draw()
         self.road_map.draw_lines(road_segment_points=True)
 
-
-
-
         self.globals.BACKGROUND.blit(self.globals.ROAD_SURFACE, (0, 0))
         self.globals.BACKGROUND.blit(self.globals.VEHICLE_SURFACE, (0, 0))
+        self.globals.BACKGROUND.blit(self.globals.BACKDROP, (0, 0))
 
-        # pygame.draw.rect(self.globals.GUI_SURFACE, Colors.MAP_CYAN, (1000, 125, 250, 175), 6, 4)
+        pygame.draw.rect(self.globals.BACKDROP, Colors.MAP_CYAN, (1000, 125, 250, 175), 6, 4)
 
         self.GUI.draw_ui()
         pygame.display.update()

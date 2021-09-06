@@ -106,7 +106,7 @@ class SimTestGUI:
         self.height = canvas_size_y
         self.manager = pygame_gui.UIManager((self.width + self.width_offset, self.height))
         self.surface = surface
-        self.manager.add_font_paths("Roboto", "data/fonts/Roboto/Roboto-Regular.ttf")
+        self.manager.add_font_paths("Roboto", "../GUI/data/fonts/Roboto/Roboto-Regular.ttf")
         self.manager.preload_fonts([{'name': 'Roboto', 'html_size': 2, 'style': 'regular'},
                                     {'name': 'Roboto', 'html_size': 3, 'style': 'regular'},
                                     {'name': 'Roboto', 'html_size': 4.5, 'style': 'regular'},
@@ -175,43 +175,43 @@ class SimTestGUI:
         self.manager.draw_ui(self.surface)
 
 
-pygame.init()
-
-pygame.display.set_caption('Quick Start')
-window_surface = pygame.display.set_mode((800, 600))
-
-background = pygame.Surface((800, 600))
-background.fill(pygame.Color('#000000'))
-
-gui = SimTestGUI(window_surface, 800, 600)
-
-
-clock = pygame.time.Clock()
-is_running = True
-
-posTest = [0,0]
-
-while is_running:
-    time_delta = clock.tick(60) / 1000.0
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            is_running = False
-
-        if event.type == pygame.USEREVENT:
-            gui.process_event(event)
-
-        gui.manager_event_process(event)
-
-
-    pygame.draw.rect(background,Colors.MAP_CYAN,(150,125,250,175),6,4)
-    posTest[0] += .01
-    gui.vehicles[1].update_params(posTest, [0,0], [0,0], 0.5)
-
-
-    gui.update_manager(time_delta)
-
-    window_surface.blit(background, (0, 0))
-
-    gui.draw_ui()
-
-    pygame.display.update()
+# pygame.init()
+#
+# pygame.display.set_caption('Quick Start')
+# gui_surface = pygame.display.set_mode((800, 600))
+#
+# # other_stuff_surface = pygame.Surface((800, 600))
+# # other_stuff_surface.fill(pygame.Color('#27B599'))
+#
+# gui = SimTestGUI(gui_surface, 800, 600)
+#
+#
+# clock = pygame.time.Clock()
+# is_running = True
+#
+# posTest = [0,0]
+#
+# while is_running:
+#     time_delta = clock.tick(60) / 1000.0
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             is_running = False
+#
+#         if event.type == pygame.USEREVENT:
+#             gui.process_event(event)
+#
+#         gui.manager_event_process(event)
+#
+#
+#     # pygame.draw.rect(other_stuff_surface, Colors.MAP_CYAN, (150, 125, 250, 175), 6, 4)
+#     posTest[0] += .01
+#     gui.vehicles[1].update_params(posTest, [0,0], [0,0], 0.5)
+#
+#
+#     gui.update_manager(time_delta)
+#
+#     # gui_surface.blit(other_stuff_surface, (0, 0))
+#
+#     gui.draw_ui()
+#
+#     pygame.display.update()

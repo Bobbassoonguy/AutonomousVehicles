@@ -51,8 +51,8 @@ class sim_GUI:
     def draw_ui(self):
         pygame.draw.rect(self.globals.BACKGROUND, (221, 221, 221), (self.globals.pixels(self.globals.CANVAS_SIZE_X),0,self.globals.GUI_WIDTH,self.globals.pixels(self.globals.CANVAS_SIZE_y)))
 
-        self.globals.BACKGROUND.blit(self.globals.GUI_SURFACE, (0, 0))
-        self.manager.draw_ui(self.globals.GUI_SURFACE)
+        self.globals.BACKGROUND.blit(self.globals.BACKDROP, (0, 0))
+        self.manager.draw_ui(self.globals.BACKDROP)
 
 
     def process_events(self, event):
