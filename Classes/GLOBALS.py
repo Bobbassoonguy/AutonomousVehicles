@@ -22,7 +22,7 @@ class Globals:
         self.VEHICLE_SURFACE = self.VEHICLE_SURFACE.convert_alpha()
 
     def point_to_pixels(self, point):
-        return [point[0] * self.PIXELS_PER_METER, point[1] * self.PIXELS_PER_METER]
+        return [round(point[0] * self.PIXELS_PER_METER), round(point[1] * self.PIXELS_PER_METER)]
 
     def pixels(self, val):
         return val * self.PIXELS_PER_METER

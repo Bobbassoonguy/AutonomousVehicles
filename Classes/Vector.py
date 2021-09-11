@@ -76,6 +76,7 @@ class Vector:
         if not self.unit_vector:
             self.x *= scale
             self.y *= scale
+        return self
 
     def set_magnitude(self, magnitude):  # scales a vector such that it points in the same direction and has passed magnitude
         if self.unit_vector:
@@ -94,6 +95,9 @@ class Vector:
 
     def list(self):
         return [self.x, self.y]
+
+    def copy(self):
+        return Vector(self.x, self.y)
 
 
 def get_Vector_between_points(start_point, end_point):
