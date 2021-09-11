@@ -20,7 +20,7 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color):
 
 
 def get_arc_points(globals, start_point, end_point, radius, width):
-    # Note: if radius is positive, the turn is a "right turn" from the start_point
+    # Note: if radius is positive, the turn is a clockwise turn from the start_point
     # Note: all values are in meters, but it shouldnt matter mathematically.
     # Note: round numbers to 5 decimal places?
     # f0 = globals.PIXELS_PER_METER*0.25  # 0.25 meters
@@ -59,16 +59,16 @@ def get_arc_points(globals, start_point, end_point, radius, width):
     center_to_start_v = center_2_to_start_v
     center_to_end_v = center_2_to_end_v
     center = center_2
-    if radius > 0:
+    if radius < 0:
         center_to_end = center_1_to_end
         center_to_start = center_1_to_start
         center_to_start_v = center_1_to_start_v
         center_to_end_v = center_1_to_end_v
         center = center_1
 
-    phi = center_to_end-center_to_start
+    phi = (center_to_end-center_to_start) % (2* math.pi)
     theta_0 = 2*math.asin(f0/(2*radius))
-    n = math.ceil(phi/theta_0)
+    n = math.ceil(abs(phi)/abs(theta_0))
     theta = phi/n
     f = 2*radius*math.sin(theta/2)
 
@@ -78,6 +78,8 @@ def get_arc_points(globals, start_point, end_point, radius, width):
     print("center: ", center)
     current_point = center_2_to_start_v
     print("N: ", n)
+    print("phi: ", math.degrees(phi))
+    print("theta: ", math.degrees(theta))
     for i in range(1,n):
         current_point.rotate(math.degrees(theta))
         points.append(current_point.copy())
