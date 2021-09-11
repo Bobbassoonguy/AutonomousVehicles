@@ -6,6 +6,26 @@ import Colors
 
 
 def draw_dashed_line(globals, surface, start_point, end_point, width, color, dash_length=3.05):
+    l = dash_length
+    d = math.sqrt((end_point[0]-start_point[0])**2 + (end_point[1]-start_point[1])**2)
+    n = math.floor(d/(2*l))
+    v = Vector.Vector((end_point[0]-start_point[0]),(end_point[1]-start_point[1]))
+    v.set_magnitude(l)
+    current_point = start_point[:]
+    for i in range(n):
+        pygame.draw.line(surface,color,globals.point_to_pixels(current_point),globals.point_to_pixels((v.copy()+current_point).list()),width=width)
+        current_point = (v.copy()+v.copy()+current_point).list()
+
+    if (2*n+1)*l >= d:
+        pygame.draw.line(surface, color, globals.point_to_pixels(current_point),
+                         globals.point_to_pixels(end_point), width=width)
+    else:
+        pygame.draw.line(surface, color, globals.point_to_pixels(current_point),
+                         globals.point_to_pixels((v.copy() + current_point).list()), width=width)
+
+    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
+
 
 
 
