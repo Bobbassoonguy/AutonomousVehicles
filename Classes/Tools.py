@@ -7,24 +7,23 @@ import Colors
 
 def draw_arc(globals, surface, start_point, end_point, radius, width, color):
     points = get_arc_points(globals, start_point, end_point, radius, width)
-
+    pixel_points = []
     for i in points:
-        print("Before: ", i)
-        i = globals.point_to_pixels(i)
-        print("After: ", i)
-        pygame.draw.circle(surface,color,i,3)
+        pixel_points.append(globals.point_to_pixels(i))
+        # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
 
+    pygame.draw.polygon(surface, color, pixel_points, 0)
     pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
     pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
-    # pygame.draw.polygon(surface, color, points, 0)
+
 
 
 def get_arc_points(globals, start_point, end_point, radius, width):
     # Note: if radius is positive, the turn is a clockwise turn from the start_point
     # Note: all values are in meters, but it shouldnt matter mathematically.
     # Note: round numbers to 5 decimal places?
-    # f0 = globals.PIXELS_PER_METER*0.25  # 0.25 meters
-    f0 = 5
+    f0 = 20/(globals.PIXELS_PER_METER)  # 0.25 meters
+    # f0 = 2
     points_vector1 = Vector.get_Vector_between_points(start_point, end_point)
     points_vector2 = Vector.get_Vector_between_points(start_point, end_point)
 
@@ -74,14 +73,16 @@ def get_arc_points(globals, start_point, end_point, radius, width):
     theta = phi/n
     f = 2*radius*math.sin(theta/2)
 
-    points = []
-    points.append(center_to_start_v)
     print("center to start v: ",center_to_start_v.list())
     print("center: ", center)
-    current_point = center_to_start_v
+    print("Starting angle: ", center_to_start_v.angle())
+    print("Ending angle: ", center_to_end_v.angle())
     print("N: ", n)
     print("phi: ", math.degrees(phi))
     print("theta: ", math.degrees(theta))
+    points = []
+    points.append(center_to_start_v)
+    current_point = center_to_start_v.copy()
     for i in range(1,n):
         current_point.rotate(math.degrees(theta))
         points.append(current_point.copy())

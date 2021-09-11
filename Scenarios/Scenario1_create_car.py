@@ -22,7 +22,7 @@ main.road_map.draw_roads()
 main.road_map.draw_lines(road_segment_points=True)
 # main.globals.draw_arc(main.globals.VEHICLE_SURFACE, Colors.CAR_PURPLE_FILL, [30, 30], [80, 60], 30, 10)
 
-Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,[60,60],[90,100],30,3.66,Colors.CAR_PURPLE_FILL)
+Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,[60,60],[120,140],-150,2*3.66,Colors.ROAD_ORANGE)
 
 while not done:
     time_delta = clock.tick(main.globals.FPS) / 1000
