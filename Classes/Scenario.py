@@ -36,9 +36,9 @@ class Scenario:
             i.draw()
         self.road_map.draw_lines(road_segment_points=True)
 
+        self.globals.BACKGROUND.blit(self.globals.BACKDROP, (0, 0))
         self.globals.BACKGROUND.blit(self.globals.ROAD_SURFACE, (0, 0))
         self.globals.BACKGROUND.blit(self.globals.VEHICLE_SURFACE, (0, 0))
-        self.globals.BACKGROUND.blit(self.globals.BACKDROP, (0, 0))
 
         pygame.draw.rect(self.globals.BACKDROP, Colors.MAP_CYAN, (1000, 125, 250, 175), 6, 4)
 
