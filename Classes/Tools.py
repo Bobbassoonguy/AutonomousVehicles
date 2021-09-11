@@ -14,7 +14,8 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color):
         print("After: ", i)
         pygame.draw.circle(surface,color,i,3)
 
-
+    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
     # pygame.draw.polygon(surface, color, points, 0)
 
 
@@ -82,7 +83,7 @@ def get_arc_points(globals, start_point, end_point, radius, width):
         points.append(current_point.copy())
     points.append(center_to_end_v)
     for i in range (n,-1,-1):
-        points.append(points[i].scale((radius-width)/radius))
+        points.append(points[i].scale(abs((abs(radius)-width)/abs(radius))))
     actual_points = []
     for i in points:
         add_list = i.list()
