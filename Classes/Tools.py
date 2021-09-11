@@ -5,8 +5,8 @@ import Vector
 import Colors
 
 
-def draw_arc(globals, surface, start_point, end_point, radius, width, color):
-    points = get_arc_points(globals, start_point, end_point, radius, width)
+def draw_arc(globals, surface, start_point, end_point, radius, width, color, inside=True):
+    points = get_arc_points(globals, start_point, end_point, radius, width, inside)
     pixel_points = []
     for i in points:
         pixel_points.append(globals.point_to_pixels(i))
@@ -18,7 +18,7 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color):
 
 
 
-def get_arc_points(globals, start_point, end_point, radius, width):
+def get_arc_points(globals, start_point, end_point, radius, width, inside=True):
     # Note: if radius is positive, the turn is a clockwise turn from the start_point
     # Note: all values are in meters, but it shouldnt matter mathematically.
     # Note: round numbers to 5 decimal places?
@@ -88,7 +88,10 @@ def get_arc_points(globals, start_point, end_point, radius, width):
         points.append(current_point.copy())
     points.append(center_to_end_v)
     for i in range (n,-1,-1):
-        points.append(points[i].scale(abs((abs(radius)-width)/abs(radius))))
+        if inside:
+            points.append(points[i].scale(abs((abs(radius)-width)/abs(radius))))
+        else:
+            points.append(points[i].scale(abs((abs(radius) + width) / abs(radius))))
     actual_points = []
     for i in points:
         add_list = i.list()
