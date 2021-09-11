@@ -16,13 +16,13 @@ clock = pygame.time.Clock()
 
 main.globals.FPS = 30
 
-# main.road_map.add_road([[30,20],[180,10,10],[170,150],[120,80],[25,30]])
+main.road_map.add_road([[30,20],[150,10,-100],[130,150],[120,80],[25,30]])
 #main.road_map.add_road([[10, 45], [35, 10]])
 main.road_map.draw_roads()
 main.road_map.draw_lines(road_segment_points=True)
 # main.globals.draw_arc(main.globals.VEHICLE_SURFACE, Colors.CAR_PURPLE_FILL, [30, 30], [80, 60], 30, 10)
 
-Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,[60,60],[120,140],-150,2*3.66,Colors.ROAD_ORANGE)
+# Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,[60,60],[120,140],-150,2*3.66,Colors.ROAD_ORANGE)
 
 while not done:
     time_delta = clock.tick(main.globals.FPS) / 1000

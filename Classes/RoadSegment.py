@@ -4,6 +4,7 @@ import Colors
 import Vector
 import copy
 import math
+import Tools
 
 class RoadSegment:
     def __init__(self, parent_MapSegment, globals, start_point, end_point, arc_radius=0):
@@ -33,8 +34,8 @@ class RoadSegment:
             points[2] = self.globals.point_to_pixels(points[2])
             points[3] = self.globals.point_to_pixels(points[3])
             pygame.draw.aalines(self.globals.ROAD_SURFACE, color, True, points)
-        elif self.arc_radius > 0:
-            pygame.draw.arc(self.globals.ROAD_SURFACE, Colors.ROAD_ORANGE, (round(self.globals.pixels(10)), round(self.globals.pixels(10)), round(self.globals.pixels(40)), round(self.globals.pixels(40))), 0, math.radians(270), round(self.globals.pixels(3.66 * 2)))
+        else:
+            Tools.draw_arc(self.globals,self.globals.ROAD_SURFACE,self.start_point,self.end_point,self.arc_radius,3.66,color)
 
 
     def centerline_as_vector(self):
