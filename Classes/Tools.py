@@ -5,6 +5,10 @@ import Vector
 import Colors
 
 
+def draw_dashed_line(globals, surface, start_point, end_point, width, color, dash_length=3.05):
+
+
+
 def draw_arc(globals, surface, start_point, end_point, radius, width, color, inside=True):
     points = get_arc_points(globals, start_point, end_point, radius, width, inside)
     pixel_points = []
@@ -13,8 +17,8 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color, ins
         # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
 
     pygame.draw.polygon(surface, color, pixel_points, 0)
-    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
-    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
+    # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+    # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
 
 
 

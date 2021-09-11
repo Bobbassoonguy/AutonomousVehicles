@@ -33,7 +33,7 @@ class RoadSegment:
             points[1] = self.globals.point_to_pixels(points[1])
             points[2] = self.globals.point_to_pixels(points[2])
             points[3] = self.globals.point_to_pixels(points[3])
-            pygame.draw.aalines(self.globals.ROAD_SURFACE, color, True, points)
+            pygame.draw.polygon(self.globals.ROAD_SURFACE, color, points, width=0)
         else:
             Tools.draw_arc(self.globals,self.globals.ROAD_SURFACE,self.start_point,self.end_point,self.arc_radius,3.66,color)
             Tools.draw_arc(self.globals, self.globals.ROAD_SURFACE, self.start_point, self.end_point, self.arc_radius, 3.66, color, inside=False)
