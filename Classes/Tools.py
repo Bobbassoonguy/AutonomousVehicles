@@ -6,6 +6,7 @@ import Colors
 
 
 def draw_dashed_line(globals, surface, start_point, end_point, width, color, dash_length=3.05):
+    pix_width = round(globals.pixels(width))
     l = dash_length
     d = math.sqrt((end_point[0]-start_point[0])**2 + (end_point[1]-start_point[1])**2)
     n = math.floor(d/(2*l))
@@ -13,20 +14,29 @@ def draw_dashed_line(globals, surface, start_point, end_point, width, color, das
     v.set_magnitude(l)
     current_point = start_point[:]
     for i in range(n):
-        pygame.draw.line(surface,color,globals.point_to_pixels(current_point),globals.point_to_pixels((v.copy()+current_point).list()),width=width)
+        pygame.draw.line(surface,color,globals.point_to_pixels(current_point),globals.point_to_pixels((v.copy()+current_point).list()),width=pix_width)
         current_point = (v.copy()+v.copy()+current_point).list()
 
     if (2*n+1)*l >= d:
         pygame.draw.line(surface, color, globals.point_to_pixels(current_point),
-                         globals.point_to_pixels(end_point), width=width)
+                         globals.point_to_pixels(end_point), width=pix_width)
     else:
         pygame.draw.line(surface, color, globals.point_to_pixels(current_point),
-                         globals.point_to_pixels((v.copy() + current_point).list()), width=width)
-
-    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
-    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
+                         globals.point_to_pixels((v.copy() + current_point).list()), width=pix_width)
 
 
+
+
+def draw_double_line(globals, surface, start_point, end_point, width, color): # Width in meters
+    v = Vector.Vector((end_point[0]-start_point[0]),(end_point[1]-start_point[1]))
+    v1 = v.copy()
+    v1.rotate(90)
+    v2 = v.copy()
+    v2.rotate(270)
+    v1.set_magnitude(2*width)
+    v2.set_magnitude(2*width)
+    pygame.draw.line(surface,color,globals.point_to_pixels((v2.copy()+start_point).list()),globals.point_to_pixels((v2.copy()+end_point).list()),width=round(globals.pixels(width)))
+    pygame.draw.line(surface, color, globals.point_to_pixels((v1.copy()+start_point).list()), globals.point_to_pixels((v1.copy()+end_point).list()), width=round(globals.pixels(width)))
 
 
 def draw_arc(globals, surface, start_point, end_point, radius, width, color, inside=True):
