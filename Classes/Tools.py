@@ -9,18 +9,21 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color):
     points = get_arc_points(globals, start_point, end_point, radius, width)
 
     for i in points:
-        print(i)
+        print("Before: ", i)
         i = globals.point_to_pixels(i)
+        print("After: ", i)
+        pygame.draw.circle(surface,color,i,3)
 
 
-    pygame.draw.polygon(surface, color, points, 0)
+    # pygame.draw.polygon(surface, color, points, 0)
 
 
 def get_arc_points(globals, start_point, end_point, radius, width):
     # Note: if radius is positive, the turn is a "right turn" from the start_point
     # Note: all values are in meters, but it shouldnt matter mathematically.
     # Note: round numbers to 5 decimal places?
-    f0 = globals.PIXELS_PER_METER*0.25  # 0.25 meters
+    # f0 = globals.PIXELS_PER_METER*0.25  # 0.25 meters
+    f0 = 5
     points_vector1 = Vector.get_Vector_between_points(start_point, end_point)
     points_vector2 = Vector.get_Vector_between_points(start_point, end_point)
 
@@ -80,7 +83,6 @@ def get_arc_points(globals, start_point, end_point, radius, width):
     points.append(center_to_end_v)
     for i in range (n,-1,-1):
         points.append(points[i].scale((radius-width)/radius))
-
     actual_points = []
     for i in points:
         add_list = i.list()

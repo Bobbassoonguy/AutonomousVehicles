@@ -11,7 +11,7 @@ import Tools
 pygame.init()
 
 done = False
-main: Scenario = Scenario("Scenario 1 - Create Car",disp_x=200, disp_y=200, pix=5)
+main: Scenario = Scenario("Scenario 1 - Create Car",disp_x=1000, disp_y=1000, pix=5)
 clock = pygame.time.Clock()
 
 main.globals.FPS = 30

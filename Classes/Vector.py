@@ -73,10 +73,11 @@ class Vector:
         self.y = mag * math.sin(math.radians(degrees))
 
     def scale(self, scale):  # scales vector by its magnitude
+        newVector = Vector(self.x, self.y)
         if not self.unit_vector:
-            self.x *= scale
-            self.y *= scale
-        return self
+            newVector.x *= scale
+            newVector.y *= scale
+        return newVector
 
     def set_magnitude(self, magnitude):  # scales a vector such that it points in the same direction and has passed magnitude
         if self.unit_vector:

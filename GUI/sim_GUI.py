@@ -5,7 +5,7 @@ import Colors
 class sim_GUI:
     def __init__(self, globals, surface):
         self.globals = globals
-        self.manager = pygame_gui.UIManager((self.globals.GUI_WIDTH + (self.globals.pixels(self.globals.CANVAS_SIZE_X)), self.globals.pixels(self.globals.CANVAS_SIZE_y)))
+        self.manager = pygame_gui.UIManager((self.globals.GUI_WIDTH + (self.globals.pixels(self.globals.CANVAS_SIZE_X)), self.globals.pixels(self.globals.CANVAS_SIZE_Y)))
         self.surface = surface
 
         # self.make_button()
@@ -49,7 +49,7 @@ class sim_GUI:
         return self.globals.pixels(self.globals.CANVAS_SIZE_X)+x
 
     def draw_ui(self):
-        pygame.draw.rect(self.globals.BACKGROUND, (221, 221, 221), (self.globals.pixels(self.globals.CANVAS_SIZE_X),0,self.globals.GUI_WIDTH,self.globals.pixels(self.globals.CANVAS_SIZE_y)))
+        pygame.draw.rect(self.globals.BACKGROUND, (221, 221, 221), (self.globals.pixels(self.globals.CANVAS_SIZE_X),0,self.globals.GUI_WIDTH,self.globals.pixels(self.globals.CANVAS_SIZE_Y)))
 
         self.globals.BACKGROUND.blit(self.globals.BACKDROP, (0, 0))
         self.manager.draw_ui(self.globals.BACKDROP)

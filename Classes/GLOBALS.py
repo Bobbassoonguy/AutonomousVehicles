@@ -5,20 +5,20 @@ import Colors
 
 
 class Globals:
-    def __init__(self, disp_x=200, disp_y=200, pix=5):
+    def __init__(self, disp_x=200, disp_y=200, pix=50):
         self.PIXELS_PER_METER = pix
         self.CANVAS_SIZE_X = disp_x
-        self.CANVAS_SIZE_y = disp_y
+        self.CANVAS_SIZE_Y = disp_y
         self.GUI_WIDTH = 300
         self.ROAD_MIN_CURVE_RAD = pix
         self.FPS = 60
-        self.BACKGROUND = pygame.display.set_mode([self.pixels(self.CANVAS_SIZE_X)+self.GUI_WIDTH, self.pixels(self.CANVAS_SIZE_y)])
-        self.BACKDROP = pygame.Surface((self.pixels(self.CANVAS_SIZE_X) + self.GUI_WIDTH, self.pixels(self.CANVAS_SIZE_y)), pygame.SRCALPHA, 32)
+        self.BACKGROUND = pygame.display.set_mode([self.CANVAS_SIZE_X+self.GUI_WIDTH, self.CANVAS_SIZE_Y])
+        self.BACKDROP = pygame.Surface((self.CANVAS_SIZE_X + self.GUI_WIDTH, self.CANVAS_SIZE_Y), pygame.SRCALPHA, 32)
         self.BACKDROP = self.BACKDROP.convert_alpha()
-        #self.GUI_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)))
-        self.ROAD_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)),pygame.SRCALPHA, 32)
+        #self.GUI_SURFACE = pygame.Surface((self.CANVAS_SIZE_X, self.CANVAS_SIZE_Y))
+        self.ROAD_SURFACE = pygame.Surface((self.CANVAS_SIZE_X, self.CANVAS_SIZE_Y),pygame.SRCALPHA, 32)
         self.ROAD_SURFACE = self.ROAD_SURFACE.convert_alpha()
-        self.VEHICLE_SURFACE = pygame.Surface((self.pixels(self.CANVAS_SIZE_X), self.pixels(self.CANVAS_SIZE_y)),pygame.SRCALPHA, 32)
+        self.VEHICLE_SURFACE = pygame.Surface((self.CANVAS_SIZE_X, self.CANVAS_SIZE_Y),pygame.SRCALPHA, 32)
         self.VEHICLE_SURFACE = self.VEHICLE_SURFACE.convert_alpha()
 
     def point_to_pixels(self, point):

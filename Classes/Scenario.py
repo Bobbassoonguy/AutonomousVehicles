@@ -12,7 +12,7 @@ import GUI_test_2
 
 #this is a new change
 class Scenario:
-    def __init__(self, name, disp_x=200, disp_y=200, pix=5):
+    def __init__(self, name, disp_x=1000, disp_y=1000, pix=15):
         #GLOBAL VARIABLES
         self.globals = GLOBALS.Globals(disp_x=disp_x, disp_y=disp_y, pix=pix)
         self.globals.ROAD_MIN_CURVE_RAD = 12
@@ -26,7 +26,7 @@ class Scenario:
 
         pygame.display.set_caption(self.name)
 
-        self.GUI = GUI_test_2.SimTestGUI(self.globals.BACKGROUND, self.globals.pixels(self.globals.CANVAS_SIZE_X)+self.globals.GUI_WIDTH, self.globals.pixels(self.globals.CANVAS_SIZE_y))
+        self.GUI = GUI_test_2.SimTestGUI(self.globals.BACKGROUND, self.globals.CANVAS_SIZE_X + self.globals.GUI_WIDTH, self.globals.CANVAS_SIZE_Y)
 
         self.globals.BACKDROP.fill((18, 20, 26))  # (18, 20, 26)
 
