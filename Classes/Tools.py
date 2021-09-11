@@ -66,7 +66,9 @@ def get_arc_points(globals, start_point, end_point, radius, width):
         center_to_end_v = center_1_to_end_v
         center = center_1
 
-    phi = (center_to_end-center_to_start) % (2* math.pi)
+    phi = (center_to_end-center_to_start) % (2 * math.pi)
+    if phi > math.pi:
+        phi -= 2*math.pi
     theta_0 = 2*math.asin(f0/(2*radius))
     n = math.ceil(abs(phi)/abs(theta_0))
     theta = phi/n
@@ -76,7 +78,7 @@ def get_arc_points(globals, start_point, end_point, radius, width):
     points.append(center_to_start_v)
     print("center to start v: ",center_to_start_v.list())
     print("center: ", center)
-    current_point = center_2_to_start_v
+    current_point = center_to_start_v
     print("N: ", n)
     print("phi: ", math.degrees(phi))
     print("theta: ", math.degrees(theta))
