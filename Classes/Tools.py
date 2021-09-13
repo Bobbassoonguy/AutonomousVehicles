@@ -69,15 +69,14 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color, ins
 
 def draw_dashed_arc(globals, surface, center, start_angle, end_angle, radius, width, color, inside=True, dash_length=3.05):
     # TODO pygame arc drawing leaves a little gap, plz fix
-    print("Start Angle: ", math.degrees(start_angle))
-    print("End Angle: ", math.degrees(end_angle))
+    print("Start Angle: ", round(math.degrees(start_angle),2), " End Angle: ", round(math.degrees(end_angle),2), " Radius:", radius)
     # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7,
     #                    width=1)  # draw start point
     # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)  # draw end point
     # pygame.draw.circle(surface, Colors.MAP_ORANGE, globals.point_to_pixels(center), 7, width=1)  # draw center point
     pix_width = round(globals.pixels(width))
     l = dash_length
-    d = abs(radius * ((end_angle - start_angle) % (2 * math.pi)))
+    d = abs(radius * (abs(end_angle - start_angle)))
     n = math.floor(d / (2 * l))
     dtheta = l / radius  # angle swept by one dash (one dash-space pair would be 2*dtheta)
     current_theta = start_angle
