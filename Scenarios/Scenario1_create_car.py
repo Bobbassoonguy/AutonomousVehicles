@@ -26,10 +26,10 @@ main.road_map.draw_lines(road_segment_points=True)
 # Tools.draw_double_line(main.globals, main.globals.VEHICLE_SURFACE,[60,120],[100,150],0.15,Colors.MAP_YELLOW)
 
 test_start = [100,100]
-test_end = [140,140]
+test_end = [150,140]
 test_rad = -50
-Tools.draw_dashed_arc(main.globals,main.globals.VEHICLE_SURFACE,test_start,test_end,test_rad,1,Colors.CAR_GREEN_LINE) # 1*3.66
-Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,test_start,test_end,test_rad,.01,Colors.CAR_RED_LINE) # 1*3.66
+Tools.draw_dashed_arc(main.globals,main.globals.VEHICLE_SURFACE,test_start,test_end,test_rad,.1,Colors.CAR_GREEN_LINE,inside=True,dash_length=2) # 1*3.66
+# Tools.draw_arc(main.globals,main.globals.VEHICLE_SURFACE,test_start,test_end,test_rad,.01,Colors.CAR_RED_LINE) # 1*3.66
 
 
 while not done:

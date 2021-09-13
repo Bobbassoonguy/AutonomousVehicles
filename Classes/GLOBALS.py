@@ -25,7 +25,7 @@ class Globals:
         return [round(point[0] * self.PIXELS_PER_METER), round(point[1] * self.PIXELS_PER_METER)]
 
     def pixels(self, val):
-        return val * self.PIXELS_PER_METER
+        return math.ceil(val * self.PIXELS_PER_METER)
 
     def draw_arc(self, surface, color, start_point, end_point, arc_radius, width):
         points_vector1 = Vector.get_Vector_between_points(start_point, end_point)
