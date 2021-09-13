@@ -40,21 +40,76 @@ def draw_double_line(globals, surface, start_point, end_point, width, color): # 
 
 
 def draw_arc(globals, surface, start_point, end_point, radius, width, color, inside=True):
-    #TODO make it so that if the passed width is ~1 pixel use the builtin arc drawing function
-    center, start_angle, end_angle = two_point_arc_circle(start_point,end_point,radius)
-    points = get_arc_outline_points(globals,center,abs(radius),start_angle,end_angle,width,inside)
-    pixel_points = []
-    for i in points:
-        pixel_points.append(globals.point_to_pixels(i))
-        # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
+    #TODO pygame arc drawing leaves a little gap, plz fix
+    center, start_angle, end_angle = two_point_arc_circle(start_point, end_point, radius)
+    if globals.pixels(width) <= 2:
+        draw_start = start_angle
+        draw_end = end_angle
+        if radius < 0:
+            draw_start = end_angle
+            draw_end = start_angle
+            radius = abs(radius)
+        pygame.draw.arc(surface, color, [globals.pixels(center[0]-radius),globals.pixels(center[1]-radius),globals.pixels(2*radius),globals.pixels(2*radius)],-draw_start,-draw_end,math.ceil(globals.pixels(width)))
+        print("draw line arc")
 
-    pygame.draw.polygon(surface, color, pixel_points, 0)
-    # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
-    # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
+    else:
+        points = get_arc_outline_points(globals,center,abs(radius),start_angle,end_angle,width,inside)
+        pixel_points = []
+        for i in points:
+            pixel_points.append(globals.point_to_pixels(i))
+            # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
+
+        pygame.draw.polygon(surface, color, pixel_points, 0)
+        # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+        # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
+
+
+def draw_dashed_arc(globals, surface, start_point, end_point, radius, width, color, inside=True, dash_length=3.05):
+    #TODO pygame arc drawing leaves a little gap, plz fix
+    center, start_angle, end_angle = two_point_arc_circle(start_point, end_point, radius)
+    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)  # draw start point
+    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)  # draw end point
+    pygame.draw.circle(surface, Colors.MAP_ORANGE, globals.point_to_pixels(center), 7, width=1)  # draw center point
+    pix_width = round(globals.pixels(width))
+    l = dash_length
+    d = radius * abs(end_angle-start_angle)
+    n = math.floor(d/(2*l))
+    dtheta = l/radius # angle swept by one dash (one dash-space pair would be 2*dtheta)
+    current_theta = start_angle
+    for i in range(n):
+
+        current_theta += dtheta * 2
+        points = get_arc_outline_points(globals,center,abs(radius),current_theta,current_theta+dtheta,width,inside)
+        pixel_points = []
+        for i in points:
+            pixel_points.append(globals.point_to_pixels(i))
+
+        pygame.draw.polygon(surface, color, pixel_points, 0)
+
+    # if globals.pixels(width) <= 2:
+    #     draw_start = start_angle
+    #     draw_end = end_angle
+    #     if radius < 0:
+    #         draw_start = end_angle
+    #         draw_end = start_angle
+    #         radius = abs(radius)
+    #     pygame.draw.arc(surface, color, [globals.pixels(center[0]-radius),globals.pixels(center[1]-radius),globals.pixels(2*radius),globals.pixels(2*radius)],-draw_start,-draw_end,math.ceil(globals.pixels(width)))
+    #     print("draw line arc")
+    #
+    # else:
+    #     points = get_arc_outline_points(globals,center,abs(radius),start_angle,end_angle,width,inside)
+    #     pixel_points = []
+    #     for i in points:
+    #         pixel_points.append(globals.point_to_pixels(i))
+    #         # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
+    #
+    #     pygame.draw.polygon(surface, color, pixel_points, 0)
+    #     # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+    #     # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
 
 
 def two_point_arc_circle(start_point, end_point, radius):
-    # returns the center point and angle swept (radians) of an arc from start_point to end_point with given radius
+    # returns the center point and angle swept (RADIANS) of an arc from start_point to end_point with given radius
     # Note: if radius is positive, the turn is a clockwise turn from the start_point
     points_vector = Vector.get_Vector_between_points(start_point, end_point)
     center_point = [(start_point[0] + end_point[0]) / 2, (start_point[1] + end_point[1]) / 2]
@@ -78,9 +133,9 @@ def two_point_arc_circle(start_point, end_point, radius):
     center_to_start = math.radians(center_to_start_v.angle())
     center_to_end = math.radians(center_to_end_v.angle())
 
-    print("Center: ", center)
-    print("Center to start: ", math.degrees(center_to_start))
-    print("Center to end: ", math.degrees(center_to_end))
+    # print("Center: ", center)
+    # print("Center to start: ", math.degrees(center_to_start))
+    # print("Center to end: ", math.degrees(center_to_end))
 
     return center, center_to_start, center_to_end
 
