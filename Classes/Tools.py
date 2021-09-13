@@ -67,15 +67,14 @@ def draw_arc(globals, surface, start_point, end_point, radius, width, color, ins
     # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
 
 
-def draw_dashed_arc(globals, surface, start_point, end_point, radius, width, color, inside=True, dash_length=3.05):
+def draw_dashed_arc(globals, surface, center, start_angle, end_angle, radius, width, color, inside=True, dash_length=3.05):
     # TODO pygame arc drawing leaves a little gap, plz fix
-    center, start_angle, end_angle = two_point_arc_circle(start_point, end_point, radius)
     print("Start Angle: ", math.degrees(start_angle))
     print("End Angle: ", math.degrees(end_angle))
-    pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7,
-                       width=1)  # draw start point
-    pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)  # draw end point
-    pygame.draw.circle(surface, Colors.MAP_ORANGE, globals.point_to_pixels(center), 7, width=1)  # draw center point
+    # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7,
+    #                    width=1)  # draw start point
+    # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)  # draw end point
+    # pygame.draw.circle(surface, Colors.MAP_ORANGE, globals.point_to_pixels(center), 7, width=1)  # draw center point
     pix_width = round(globals.pixels(width))
     l = dash_length
     d = abs(radius * ((end_angle - start_angle) % (2 * math.pi)))
@@ -156,6 +155,43 @@ def draw_dashed_arc(globals, surface, start_point, end_point, radius, width, col
                 pixel_points.append(globals.point_to_pixels(i))
             pygame.draw.polygon(surface, color, pixel_points, 0)
 
+def draw_double_arc(globals, surface, start_point, end_point, radius, width, color):
+    #radius is the centerline
+    # TODO pygame arc drawing leaves a little gap, plz fix
+    center, start_angle, end_angle = two_point_arc_circle(start_point, end_point, radius)
+    if globals.pixels(width) <= 2:
+        draw_start = start_angle
+        draw_end = end_angle
+        if radius < 0:
+            draw_start = end_angle
+            draw_end = start_angle
+            radius = abs(radius)
+        pygame.draw.arc(surface, color, [globals.pixels(center[0] - (radius-width)), globals.pixels(center[1] - (radius-width)),
+                                         globals.pixels(2 * (radius-width)), globals.pixels(2 * (radius-width))], -draw_start,
+                        -draw_end, math.ceil(globals.pixels(width)))
+        pygame.draw.arc(surface, color, [globals.pixels(center[0] - (radius + 2 * width)), globals.pixels(center[1] - (radius + 2 * width)),
+                                         globals.pixels(2 * (radius + 2 * width)), globals.pixels(2 * (radius + 2 * width))], -draw_start,
+                        -draw_end, math.ceil(globals.pixels(width)))
+        print("draw line arc")
+
+    else:
+        points = get_arc_outline_points(globals, center, abs(radius-width), start_angle, end_angle, width)
+        pixel_points = []
+        for i in points:
+            pixel_points.append(globals.point_to_pixels(i))
+            # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
+
+        pygame.draw.polygon(surface, color, pixel_points, 0)
+
+        points = get_arc_outline_points(globals, center, abs(radius + 2*width), start_angle, end_angle, width)
+        pixel_points = []
+        for i in points:
+            pixel_points.append(globals.point_to_pixels(i))
+            # pygame.draw.circle(surface,color,globals.point_to_pixels(i),3)
+
+        pygame.draw.polygon(surface, color, pixel_points, 0)
+    # pygame.draw.circle(surface, Colors.CAR_GREEN_LINE, globals.point_to_pixels(start_point), 7, width=1)
+    # pygame.draw.circle(surface, Colors.CAR_RED_LINE, globals.point_to_pixels(end_point), 7, width=1)
 
 def two_point_arc_circle(start_point, end_point, radius):
     # returns the center point and angle swept (RADIANS) of an arc from start_point to end_point with given radius

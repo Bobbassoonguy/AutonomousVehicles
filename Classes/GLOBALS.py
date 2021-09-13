@@ -11,6 +11,9 @@ class Globals:
         self.CANVAS_SIZE_Y = disp_y
         self.GUI_WIDTH = 300
         self.ROAD_MIN_CURVE_RAD = pix
+        self.LANE_WIDTH = 3.66  # meters
+        self.ROAD_LINE_WIDTH = 0.152  # meters
+        self.ROAD_DASH_LENGTH = 3.048  # meters
         self.FPS = 60
         self.BACKGROUND = pygame.display.set_mode([self.CANVAS_SIZE_X+self.GUI_WIDTH, self.CANVAS_SIZE_Y])
         self.BACKDROP = pygame.Surface((self.CANVAS_SIZE_X + self.GUI_WIDTH, self.CANVAS_SIZE_Y), pygame.SRCALPHA, 32)

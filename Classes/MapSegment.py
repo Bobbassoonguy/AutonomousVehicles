@@ -29,3 +29,6 @@ class MapSegment:
     def draw_road_segment(self):
         self.road_segment.draw()
 
+    def get_lane_nums(self):
+        return [self.parent.lanes_forward,self.parent.lanes_reverse]
+

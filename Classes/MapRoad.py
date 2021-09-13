@@ -7,6 +7,8 @@ class MapRoad:
         self.globals = globals
 
         self.points = points
+        self.lanes_forward = 2
+        self.lanes_reverse = 3
 
         self.segments = []
         self.create_segments()
