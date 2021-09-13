@@ -72,17 +72,18 @@ def draw_dashed_arc(globals, surface, start_point, end_point, radius, width, col
     pygame.draw.circle(surface, Colors.MAP_ORANGE, globals.point_to_pixels(center), 7, width=1)  # draw center point
     pix_width = round(globals.pixels(width))
     l = dash_length
-    d = radius * abs(end_angle-start_angle)
+    d = abs(radius * (end_angle-start_angle))
     n = math.floor(d/(2*l))
     dtheta = l/radius # angle swept by one dash (one dash-space pair would be 2*dtheta)
     current_theta = start_angle
     for i in range(n):
 
-        current_theta += dtheta * 2
-        points = get_arc_outline_points(globals,center,abs(radius),current_theta,current_theta+dtheta,width,inside)
+        current_theta -= dtheta * 2
+        points = get_arc_outline_points(globals,center,abs(radius),current_theta,current_theta-dtheta,width,inside)
         pixel_points = []
         for i in points:
             pixel_points.append(globals.point_to_pixels(i))
+            print(globals.point_to_pixels(i))
 
         pygame.draw.polygon(surface, color, pixel_points, 0)
 
